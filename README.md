@@ -102,6 +102,10 @@ npm run build && npm run start
 
 Buka http://localhost:3000.
 
+**Shortcut editor:** `Spasi` play/pause · `I` tandai awal clip · `O` tandai
+akhir clip. Job lama bisa dihapus (beserta file-nya) dari daftar "Job terbaru"
+di home (tombol ✕).
+
 ### Tambahkan musik & font (sekali setup)
 
 - **Musik** → taruh file `.mp3` royalty-free ke `public/music/<kategori>/`.

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import VideoPreview from "@/components/VideoPreview";
+import VideoPreview, { VideoPreviewHandle } from "@/components/VideoPreview";
 import StylePicker from "@/components/StylePicker";
 import SubtitleEditor from "@/components/SubtitleEditor";
 import MusicPicker, { MusicValue } from "@/components/MusicPicker";
@@ -46,6 +46,7 @@ export default function EditorPage({
   const [trimStart, setTrimStart] = useState(0);
   const [trimEnd, setTrimEnd] = useState(0);
   const currentTimeRef = useRef(0);
+  const previewRef = useRef<VideoPreviewHandle>(null);
 
   // Phase 4
   const [cropOffset, setCropOffset] = useState(0);
@@ -92,6 +93,34 @@ export default function EditorPage({
     setDuration((prev) => (d > prev ? d : prev));
     setTrimEnd((prev) => (prev <= 0 ? d : prev));
   };
+
+  // Editor keyboard shortcuts: Space = play/pause, I/O = mark in/out.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const el = e.target as HTMLElement | null;
+      if (
+        el &&
+        (el.tagName === "INPUT" ||
+          el.tagName === "TEXTAREA" ||
+          el.tagName === "SELECT" ||
+          el.isContentEditable)
+      ) {
+        return;
+      }
+      const now = previewRef.current?.getTime() ?? currentTimeRef.current;
+      const max = duration > 0 ? duration : Infinity;
+      if (e.code === "Space") {
+        e.preventDefault();
+        previewRef.current?.toggle();
+      } else if (e.key === "i" || e.key === "I") {
+        setTrimStart(Math.max(0, Math.min(now, trimEnd - 0.5)));
+      } else if (e.key === "o" || e.key === "O") {
+        setTrimEnd(Math.min(max, Math.max(now, trimStart + 0.5)));
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [trimStart, trimEnd, duration]);
 
   const runTranscribe = async () => {
     setError(null);
@@ -258,6 +287,7 @@ export default function EditorPage({
       {/* LEFT: preview */}
       <div className="lg:sticky lg:top-6 lg:self-start">
         <VideoPreview
+          ref={previewRef}
           src={videoSrc}
           transcript={transcript}
           style={style}
@@ -413,6 +443,11 @@ export default function EditorPage({
               <p className="text-xs text-zinc-500">
                 Putar video ke momen viral, lalu pakai tombol di atas untuk
                 tandai awal/akhir. Subtitle & musik otomatis ngikut potongan.
+              </p>
+              <p className="text-[11px] text-zinc-600">
+                ⌨️ Shortcut: <kbd className="text-zinc-400">Spasi</kbd>{" "}
+                play/pause · <kbd className="text-zinc-400">I</kbd> tandai awal ·{" "}
+                <kbd className="text-zinc-400">O</kbd> tandai akhir
               </p>
             </div>
           ) : (

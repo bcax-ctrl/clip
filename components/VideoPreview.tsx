@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import type { SubtitleStyleId, Transcript } from "@/lib/types";
 import {
   buildCaptionLines,
@@ -8,6 +14,13 @@ import {
   activeWordIndex,
   CaptionLine,
 } from "@/lib/captions";
+
+/** Imperative controls exposed to the editor (for keyboard shortcuts). */
+export interface VideoPreviewHandle {
+  toggle: () => void;
+  seek: (t: number) => void;
+  getTime: () => number;
+}
 
 interface Props {
   src: string;
@@ -23,19 +36,35 @@ interface Props {
   onDuration?: (d: number) => void;
 }
 
-export default function VideoPreview({
-  src,
-  transcript,
-  style,
-  cropOffset,
-  hookText,
-  hookDuration,
-  clipStart,
-  clipEnd,
-  onTime,
-  onDuration,
-}: Props) {
+const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview(
+  {
+    src,
+    transcript,
+    style,
+    cropOffset,
+    hookText,
+    hookDuration,
+    clipStart,
+    clipEnd,
+    onTime,
+    onDuration,
+  },
+  ref
+) {
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    toggle: () => {
+      const v = videoRef.current;
+      if (!v) return;
+      if (v.paused) v.play().catch(() => {});
+      else v.pause();
+    },
+    seek: (t: number) => {
+      if (videoRef.current) videoRef.current.currentTime = t;
+    },
+    getTime: () => videoRef.current?.currentTime ?? 0,
+  }));
   const [time, setTime] = useState(0);
   const [lines, setLines] = useState<CaptionLine[]>([]);
   const rangeRef = useRef({ start: clipStart ?? 0, end: clipEnd ?? Infinity });
@@ -138,7 +167,9 @@ export default function VideoPreview({
       `}</style>
     </div>
   );
-}
+});
+
+export default VideoPreview;
 
 function CaptionRender({
   line,

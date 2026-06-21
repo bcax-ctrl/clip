@@ -28,6 +28,12 @@ export default function HomePage() {
       .catch(() => {});
   }, []);
 
+  const deleteJob = useCallback(async (id: string) => {
+    if (!confirm("Hapus job ini beserta video & hasilnya?")) return;
+    setJobs((prev) => prev.filter((j) => j.id !== id));
+    await fetch(`/api/jobs/${id}`, { method: "DELETE" }).catch(() => {});
+  }, []);
+
   const handleFile = useCallback(
     async (file: File) => {
       setError(null);
@@ -159,26 +165,35 @@ export default function HomePage() {
         <section className="space-y-3">
           <div className="label">Job terbaru</div>
           <div className="grid gap-2 sm:grid-cols-2">
-            {jobs.slice(0, 6).map((j) => (
-              <a
+            {jobs.slice(0, 8).map((j) => (
+              <div
                 key={j.id}
-                href={
-                  j.status === "done"
-                    ? `/result/${j.id}`
-                    : `/editor/${j.id}`
-                }
-                className="card flex items-center justify-between px-4 py-3 hover:border-ink-400"
+                className="card flex items-center gap-2 px-4 py-3 hover:border-ink-400"
               >
-                <div className="min-w-0">
-                  <div className="truncate text-sm font-medium">
-                    {j.sourceName}
+                <a
+                  href={
+                    j.status === "done" ? `/result/${j.id}` : `/editor/${j.id}`
+                  }
+                  className="flex min-w-0 flex-1 items-center justify-between"
+                >
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium">
+                      {j.sourceName}
+                    </div>
+                    <div className="text-xs text-zinc-500">
+                      {fmtDuration(j.durationSec)}
+                    </div>
                   </div>
-                  <div className="text-xs text-zinc-500">
-                    {fmtDuration(j.durationSec)}
-                  </div>
-                </div>
-                <StatusBadge status={j.status} />
-              </a>
+                  <StatusBadge status={j.status} />
+                </a>
+                <button
+                  onClick={() => deleteJob(j.id)}
+                  title="Hapus job"
+                  className="flex-shrink-0 rounded-lg px-2 py-1 text-sm text-zinc-500 hover:bg-ink-500 hover:text-red-400"
+                >
+                  ✕
+                </button>
+              </div>
             ))}
           </div>
         </section>
