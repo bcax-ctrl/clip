@@ -4,6 +4,48 @@ import { Transcript, Word, SubtitleStyleId } from "./types";
 export const PLAY_W = 1080;
 export const PLAY_H = 1920;
 
+/**
+ * Clip a transcript to [start, end] and rebase timestamps to 0.
+ *
+ * Needed because ffmpeg input-seeking (`-ss start`) resets the output timeline
+ * to 0, while the raw transcript holds absolute source times. Without this the
+ * burned subtitles would be offset by `start` seconds.
+ */
+export function clipTranscript(
+  t: Transcript,
+  start: number,
+  end: number
+): Transcript {
+  const overlaps = (s: number, e: number) => e > start && s < end;
+  const reTime = (x: number) =>
+    Math.max(0, Math.min(x, end) - start);
+
+  const clipWords = (words: Word[]): Word[] =>
+    words
+      .filter((w) => overlaps(w.start, w.end))
+      .map((w) => ({
+        text: w.text,
+        start: reTime(w.start),
+        end: reTime(w.end),
+      }));
+
+  const segments = t.segments
+    .filter((s) => overlaps(s.start, s.end))
+    .map((s) => ({
+      start: reTime(s.start),
+      end: reTime(s.end),
+      text: s.text,
+      words: clipWords(s.words),
+    }));
+
+  return {
+    ...t,
+    duration: Math.max(0, end - start),
+    segments,
+    words: clipWords(t.words),
+  };
+}
+
 /** Convert seconds -> ASS timestamp H:MM:SS.cc (centiseconds). */
 export function assTime(sec: number): string {
   if (!Number.isFinite(sec) || sec < 0) sec = 0;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import VideoPreview from "@/components/VideoPreview";
 import StylePicker from "@/components/StylePicker";
@@ -37,6 +37,12 @@ export default function EditorPage({
   const [musicVolume, setMusicVolume] = useState(0.5);
   const [duck, setDuck] = useState(true);
 
+  // Clip selection (trim)
+  const [duration, setDuration] = useState(0);
+  const [trimStart, setTrimStart] = useState(0);
+  const [trimEnd, setTrimEnd] = useState(0);
+  const currentTimeRef = useRef(0);
+
   // Phase 4
   const [cropOffset, setCropOffset] = useState(0);
   const [hookText, setHookText] = useState("");
@@ -65,6 +71,21 @@ export default function EditorPage({
     loadJob();
   }, [loadJob]);
 
+  // Seed clip duration from the job once it's known.
+  useEffect(() => {
+    if (job?.durationSec && duration === 0) {
+      applyDuration(job.durationSec);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [job?.durationSec]);
+
+  // Adopt a freshly discovered duration (job probe or <video> metadata).
+  const applyDuration = (d: number) => {
+    if (!d || !Number.isFinite(d)) return;
+    setDuration((prev) => (d > prev ? d : prev));
+    setTrimEnd((prev) => (prev <= 0 ? d : prev));
+  };
+
   const runTranscribe = async () => {
     setError(null);
     setTranscribing(true);
@@ -91,6 +112,11 @@ export default function EditorPage({
     setPercent(0);
     setRenderMsg("Menyiapkan render…");
 
+    const trimmed =
+      duration > 0 &&
+      trimEnd > trimStart &&
+      (trimStart > 0.05 || trimEnd < duration - 0.05);
+
     const options: RenderOptions = {
       subtitleStyle: transcript ? style : "none",
       crop: { aspect: "9:16", offsetX: cropOffset },
@@ -98,6 +124,7 @@ export default function EditorPage({
       music: music
         ? { ...music, volume: musicVolume, duck }
         : undefined,
+      trim: trimmed ? { start: trimStart, end: trimEnd } : undefined,
     };
 
     try {
@@ -180,6 +207,10 @@ export default function EditorPage({
           cropOffset={cropOffset}
           hookText={hookText}
           hookDuration={hookDuration}
+          clipStart={trimStart}
+          clipEnd={trimEnd}
+          onTime={(t) => (currentTimeRef.current = t)}
+          onDuration={applyDuration}
         />
       </div>
 
@@ -236,8 +267,82 @@ export default function EditorPage({
           )}
         </Section>
 
+        {/* Clip selection (trim) */}
+        <Section step={2} title="Pilih Clip (Trim)">
+          {duration > 0 ? (
+            <div className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-semibold">
+                  {fmtTime(trimStart)} – {fmtTime(trimEnd)}
+                </span>
+                <span className="rounded-md bg-brand/15 px-2 py-0.5 text-xs font-semibold text-brand">
+                  durasi {fmtTime(Math.max(0, trimEnd - trimStart))}
+                </span>
+              </div>
+
+              <Slider
+                label={`Mulai: ${fmtTime(trimStart)}`}
+                min={0}
+                max={duration}
+                step={0.1}
+                value={trimStart}
+                onChange={(v) => setTrimStart(Math.min(v, trimEnd - 0.5))}
+              />
+              <Slider
+                label={`Selesai: ${fmtTime(trimEnd)}`}
+                min={0}
+                max={duration}
+                step={0.1}
+                value={trimEnd}
+                onChange={(v) => setTrimEnd(Math.max(v, trimStart + 0.5))}
+              />
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  className="btn-ghost px-3 py-1.5 text-xs"
+                  onClick={() =>
+                    setTrimStart(
+                      Math.min(currentTimeRef.current, trimEnd - 0.5)
+                    )
+                  }
+                >
+                  ⏱ Set awal = posisi video
+                </button>
+                <button
+                  className="btn-ghost px-3 py-1.5 text-xs"
+                  onClick={() =>
+                    setTrimEnd(
+                      Math.max(currentTimeRef.current, trimStart + 0.5)
+                    )
+                  }
+                >
+                  ⏱ Set akhir = posisi video
+                </button>
+                <button
+                  className="px-3 py-1.5 text-xs text-zinc-400 underline hover:text-zinc-200"
+                  onClick={() => {
+                    setTrimStart(0);
+                    setTrimEnd(duration);
+                  }}
+                >
+                  Reset (full)
+                </button>
+              </div>
+              <p className="text-xs text-zinc-500">
+                Putar video ke momen viral, lalu pakai tombol di atas untuk
+                tandai awal/akhir. Subtitle & musik otomatis ngikut potongan.
+              </p>
+            </div>
+          ) : (
+            <p className="text-xs text-zinc-500">
+              Durasi video belum kebaca. Putar/seek videonya sebentar untuk
+              memuat metadata.
+            </p>
+          )}
+        </Section>
+
         {/* Phase 3: music */}
-        <Section step={2} title="Background Music">
+        <Section step={3} title="Background Music">
           <MusicPicker value={music} onChange={setMusic} />
           {music && (
             <div className="mt-3 space-y-3 border-t border-ink-500 pt-3">
@@ -263,7 +368,7 @@ export default function EditorPage({
         </Section>
 
         {/* Phase 4: crop */}
-        <Section step={3} title="Crop 9:16">
+        <Section step={4} title="Crop 9:16">
           <Slider
             label={`Geser fokus crop: ${
               cropOffset === 0
@@ -284,7 +389,7 @@ export default function EditorPage({
         </Section>
 
         {/* Phase 4: hook */}
-        <Section step={4} title="Hook Text (3 detik pertama)">
+        <Section step={5} title="Hook Text (3 detik pertama)">
           <input
             className="input"
             placeholder="cth: TUNGGU SAMPAI AKHIR 😱"
@@ -305,7 +410,7 @@ export default function EditorPage({
         </Section>
 
         {/* Render */}
-        <Section step={5} title="Render Final (1080×1920)">
+        <Section step={6} title="Render Final (1080×1920)">
           {rendering ? (
             <div className="space-y-2">
               <div className="h-3 w-full overflow-hidden rounded-full bg-ink-500">
@@ -325,6 +430,13 @@ export default function EditorPage({
       </div>
     </div>
   );
+}
+
+function fmtTime(sec: number): string {
+  if (!Number.isFinite(sec) || sec < 0) sec = 0;
+  const m = Math.floor(sec / 60);
+  const s = Math.floor(sec % 60);
+  return `${m}:${String(s).padStart(2, "0")}`;
 }
 
 function Section({

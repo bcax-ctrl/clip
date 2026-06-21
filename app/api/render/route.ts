@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "node:fs";
 import { getJob, updateJob, setStatus } from "@/lib/jobs";
 import { readTranscript } from "@/lib/transcribe";
-import { generateAss } from "@/lib/ass";
+import { generateAss, clipTranscript } from "@/lib/ass";
 import { renderJob } from "@/lib/ffmpeg";
 import { jobFile, FILES } from "@/lib/paths";
 import { RenderOptions } from "@/lib/types";
@@ -32,11 +32,19 @@ export async function POST(req: NextRequest) {
 
     // Regenerate the .ass to match the chosen style (if subtitles requested).
     if (options.subtitleStyle && options.subtitleStyle !== "none") {
-      const transcript = readTranscript(jobId);
+      let transcript = readTranscript(jobId);
       if (!transcript) {
         return NextResponse.json(
           { error: "Transcript belum ada untuk subtitle." },
           { status: 400 }
+        );
+      }
+      // If trimming, clip + rebase subtitle timestamps to the output timeline.
+      if (options.trim && options.trim.end > options.trim.start) {
+        transcript = clipTranscript(
+          transcript,
+          options.trim.start,
+          options.trim.end
         );
       }
       const ass = generateAss(transcript, options.subtitleStyle);

@@ -16,6 +16,11 @@ interface Props {
   cropOffset: number; // -1..1
   hookText: string;
   hookDuration: number;
+  /** clip range (source seconds) for looped preview; defaults to full video. */
+  clipStart?: number;
+  clipEnd?: number;
+  onTime?: (t: number) => void;
+  onDuration?: (d: number) => void;
 }
 
 export default function VideoPreview({
@@ -25,30 +30,56 @@ export default function VideoPreview({
   cropOffset,
   hookText,
   hookDuration,
+  clipStart,
+  clipEnd,
+  onTime,
+  onDuration,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [time, setTime] = useState(0);
   const [lines, setLines] = useState<CaptionLine[]>([]);
+  const rangeRef = useRef({ start: clipStart ?? 0, end: clipEnd ?? Infinity });
+  rangeRef.current = {
+    start: clipStart ?? 0,
+    end: clipEnd && clipEnd > 0 ? clipEnd : Infinity,
+  };
 
   useEffect(() => {
     setLines(transcript ? buildCaptionLines(transcript, style) : []);
   }, [transcript, style]);
 
-  // rAF loop for smooth word-level sync while playing.
+  // rAF loop for smooth word-level sync + clip-range looping.
   useEffect(() => {
     let raf = 0;
     const tick = () => {
       const v = videoRef.current;
-      if (v) setTime(v.currentTime);
+      if (v) {
+        const { start, end } = rangeRef.current;
+        // Loop playback within the selected clip range.
+        if (!v.paused && v.currentTime >= end) v.currentTime = start;
+        setTime(v.currentTime);
+        onTime?.(v.currentTime);
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, []);
+  }, [onTime]);
+
+  const playClip = () => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = rangeRef.current.start;
+    v.play().catch(() => {});
+  };
 
   const objX = ((cropOffset + 1) / 2) * 100; // 0..100%
   const line = activeLine(lines, time);
-  const showHook = !!hookText.trim() && time < hookDuration;
+  const hookStart = clipStart ?? 0;
+  const showHook =
+    !!hookText.trim() &&
+    time >= hookStart &&
+    time < hookStart + hookDuration;
 
   return (
     <div className="mx-auto w-full max-w-[340px]">
@@ -58,6 +89,7 @@ export default function VideoPreview({
           src={src}
           controls
           playsInline
+          onLoadedMetadata={(e) => onDuration?.(e.currentTarget.duration)}
           className="absolute inset-0 h-full w-full"
           style={{ objectFit: "cover", objectPosition: `${objX}% 50%` }}
         />
@@ -79,7 +111,16 @@ export default function VideoPreview({
         )}
       </div>
 
-      <p className="mt-2 text-center text-xs text-zinc-500">
+      <div className="mt-2 flex items-center justify-center gap-2">
+        <button
+          onClick={playClip}
+          className="rounded-lg bg-ink-500 px-3 py-1.5 text-xs font-semibold hover:bg-ink-400"
+        >
+          ▶ Putar clip
+        </button>
+      </div>
+
+      <p className="mt-1.5 text-center text-xs text-zinc-500">
         Preview perkiraan — hasil burn final dirender via ffmpeg/libass.
       </p>
 

@@ -21,7 +21,7 @@ Upload / YouTube  →  Whisper (subtitle)  →  Pilih style + musik + crop + hoo
 | 1 | Drag-drop upload (mp4/mov/webm/mkv) atau paste link YouTube (yt-dlp). Job system berbasis JSON. |
 | 2 | Transkripsi Whisper word-level → generate `.ass`. 3 style: **Karaoke Bold**, **Clean Caption**, **Hormozi Style**. Live preview di player. |
 | 3 | Background music per kategori (energetic/chill/dramatic/funny), preview 5 detik, **auto-ducking** (`sidechaincompress`), slider volume. |
-| 4 | Crop 16:9 → 9:16 dengan slider geser fokus, hook text (drawtext + fade-in), render gabungan 1080×1920, progress bar real-time (SSE). |
+| 4 | **Trim / pilih segmen clip** dari video panjang (tandai awal/akhir dari posisi player, preview nge-loop di range), crop 16:9 → 9:16 dengan slider geser fokus, hook text (drawtext + fade-in), render gabungan 1080×1920, progress bar real-time (SSE). |
 | 5 | PWA (manifest + service worker + "Add to Home Screen"), Notification API ("Clip kamu udah jadi! 🎬"). |
 
 ---
@@ -147,6 +147,9 @@ jobs/                           # storage render sementara (gitignored)
 
 Satu command FFmpeg menggabungkan semua:
 
+0. **Trim clip** — input-seeking `-ss start -to end` untuk ambil segmen viral
+   saja. Timestamp subtitle otomatis di-rebase ke 0 (`clipTranscript`) supaya
+   subtitle tetap sinkron setelah dipotong.
 1. **Crop 9:16** — `scale=...:force_original_aspect_ratio=increase,crop=1080:1920`
    dengan offset X dari slider.
 2. **Burn subtitle** — filter `subtitles=subtitle.ass` (libass, animasi per-kata).
