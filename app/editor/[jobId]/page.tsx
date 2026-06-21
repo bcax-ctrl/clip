@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import VideoPreview from "@/components/VideoPreview";
 import StylePicker from "@/components/StylePicker";
+import SubtitleEditor from "@/components/SubtitleEditor";
 import MusicPicker, { MusicValue } from "@/components/MusicPicker";
 import { showNotification, notifyEnabledPref } from "@/lib/notify";
 import type {
@@ -31,6 +32,7 @@ export default function EditorPage({
   const [model, setModel] = useState<WhisperModel>("base");
   const [transcribing, setTranscribing] = useState(false);
   const [style, setStyle] = useState<SubtitleStyleId>("karaoke");
+  const [editingText, setEditingText] = useState(false);
 
   // Phase 3
   const [music, setMusic] = useState<MusicValue | null>(null);
@@ -103,6 +105,20 @@ export default function EditorPage({
       setError(e instanceof Error ? e.message : "Transkripsi gagal.");
     } finally {
       setTranscribing(false);
+    }
+  };
+
+  const saveTranscript = async (t: Transcript) => {
+    setError(null);
+    const res = await fetch(`/api/transcript/${jobId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ transcript: t }),
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error || "Gagal menyimpan subtitle.");
+      throw new Error("save failed");
     }
   };
 
@@ -257,10 +273,35 @@ export default function EditorPage({
             </div>
           ) : (
             <div className="space-y-3">
-              <p className="text-xs text-emerald-400">
-                ✓ {transcript.words.length} kata ditranskrip
-                {transcript.language ? ` (${transcript.language})` : ""}
-              </p>
+              <div className="flex items-center justify-between">
+                <p className="text-xs text-emerald-400">
+                  ✓ {transcript.words.length} kata ditranskrip
+                  {transcript.language ? ` (${transcript.language})` : ""}
+                </p>
+                <button
+                  onClick={() => setEditingText((v) => !v)}
+                  className="text-xs font-semibold text-zinc-300 underline hover:text-white"
+                >
+                  {editingText ? "Tutup editor" : "✏️ Edit teks"}
+                </button>
+              </div>
+
+              {editingText && (
+                <SubtitleEditor
+                  transcript={transcript}
+                  rangeStart={trimStart}
+                  rangeEnd={
+                    trimEnd > 0
+                      ? trimEnd
+                      : duration > 0
+                      ? duration
+                      : Number.MAX_SAFE_INTEGER
+                  }
+                  onChange={setTranscript}
+                  onSave={saveTranscript}
+                />
+              )}
+
               <div className="label">Pilih style</div>
               <StylePicker value={style} onChange={setStyle} />
             </div>

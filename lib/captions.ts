@@ -84,3 +84,20 @@ export function activeWordIndex(line: CaptionLine, t: number): number {
   }
   return -1;
 }
+
+/**
+ * After editing the flat `words` array (typo fixes / deletions), rebuild each
+ * segment's words + text from the (unchanged) segment time boundaries so the
+ * "Clean Caption" style and the flat list stay consistent.
+ */
+export function reconcileTranscript(t: Transcript): Transcript {
+  const segments = t.segments
+    .map((seg) => {
+      const words = t.words.filter(
+        (w) => w.start >= seg.start - 0.05 && w.start < seg.end + 0.05
+      );
+      return { ...seg, words, text: words.map((w) => w.text).join(" ") };
+    })
+    .filter((seg) => seg.words.length > 0);
+  return { ...t, segments };
+}

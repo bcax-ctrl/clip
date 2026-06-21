@@ -19,7 +19,7 @@ Upload / YouTube  →  Whisper (subtitle)  →  Pilih style + musik + crop + hoo
 | Fase | Fitur |
 |------|-------|
 | 1 | Drag-drop upload (mp4/mov/webm/mkv) atau paste link YouTube (yt-dlp). Job system berbasis JSON. |
-| 2 | Transkripsi Whisper word-level → generate `.ass`. 3 style: **Karaoke Bold**, **Clean Caption**, **Hormozi Style**. Live preview di player. |
+| 2 | Transkripsi Whisper word-level → generate `.ass`. 3 style: **Karaoke Bold**, **Clean Caption**, **Hormozi Style**. **Edit teks subtitle** inline (koreksi typo Whisper / hapus kata) sebelum render. Live preview di player. |
 | 3 | Background music per kategori (energetic/chill/dramatic/funny), preview 5 detik, **auto-ducking** (`sidechaincompress`), slider volume. |
 | 4 | **Trim / pilih segmen clip** dari video panjang (tandai awal/akhir dari posisi player, preview nge-loop di range), crop 16:9 → 9:16 dengan slider geser fokus, hook text (drawtext + fade-in), render gabungan 1080×1920, progress bar real-time (SSE). |
 | 5 | PWA (manifest + service worker + "Add to Home Screen"), Notification API ("Clip kamu udah jadi! 🎬"). |
