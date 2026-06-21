@@ -23,6 +23,7 @@ Upload / YouTube  →  Whisper (subtitle)  →  Pilih style + musik + crop + hoo
 | 3 | Background music per kategori (energetic/chill/dramatic/funny), preview 5 detik, **auto-ducking** (`sidechaincompress`), slider volume. |
 | 4 | **Trim / pilih segmen clip** dari video panjang (tandai awal/akhir dari posisi player, preview nge-loop di range), crop 16:9 → 9:16 dengan slider geser fokus, hook text (drawtext + fade-in), render gabungan 1080×1920, progress bar real-time (SSE). |
 | 5 | PWA (manifest + service worker + "Add to Home Screen"), Notification API ("Clip kamu udah jadi! 🎬"). |
+| 6 | **Auto-suggest momen** (deteksi highlight dari transkrip: densitas bicara + jeda natural + cue ?/!/angka) & **Multi-clip** (antri banyak segmen → render berurutan → galeri hasil, download per-clip). |
 
 ---
 
@@ -161,6 +162,16 @@ Satu command FFmpeg menggabungkan semua:
 
 Tiap job punya folder `jobs/<id>/` berisi `source.mp4`, `transcript.json`,
 `subtitle.ass`, `output.mp4`, `render.log`, dan `job.json` (status).
+
+### Multi-clip & auto-suggest
+
+- **Auto-suggest** (`/api/suggest`) menganalisa `transcript.json` murni
+  (tanpa ML): geser jendela sepanjang target durasi, snap ke jeda alami, skor
+  dari densitas kata + cue `?`/`!`/angka, ambil top non-overlap.
+- **Multi-clip** (`/api/render-clips`) merender tiap segmen berurutan ke
+  `output-1.mp4`, `output-2.mp4`, … dengan `subtitle-<n>.ass` masing-masing.
+  Style/musik/crop/hook global; tiap clip punya trim sendiri. Galeri hasil di
+  halaman result dengan progress per-clip + download per-clip.
 
 ---
 

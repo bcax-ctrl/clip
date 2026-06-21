@@ -6,12 +6,14 @@ import VideoPreview from "@/components/VideoPreview";
 import StylePicker from "@/components/StylePicker";
 import SubtitleEditor from "@/components/SubtitleEditor";
 import MusicPicker, { MusicValue } from "@/components/MusicPicker";
+import ClipsPanel from "@/components/ClipsPanel";
 import { showNotification, notifyEnabledPref } from "@/lib/notify";
 import type {
   Job,
   Transcript,
   SubtitleStyleId,
   RenderOptions,
+  ClipSpec,
 } from "@/lib/types";
 
 type WhisperModel = "tiny" | "base" | "small";
@@ -49,6 +51,9 @@ export default function EditorPage({
   const [cropOffset, setCropOffset] = useState(0);
   const [hookText, setHookText] = useState("");
   const [hookDuration, setHookDuration] = useState(3);
+
+  // Multi-clip queue
+  const [clips, setClips] = useState<ClipSpec[]>([]);
 
   // Render
   const [rendering, setRendering] = useState(false);
@@ -122,6 +127,47 @@ export default function EditorPage({
     }
   };
 
+  // Global render options shared by single + batch render (trim added per call).
+  const baseOptions = (): RenderOptions => ({
+    subtitleStyle: transcript ? style : "none",
+    crop: { aspect: "9:16", offsetX: cropOffset },
+    hook: { text: hookText, durationSec: hookDuration },
+    music: music ? { ...music, volume: musicVolume, duck } : undefined,
+  });
+
+  // Clip queue handlers
+  const addClip = (spec: ClipSpec) => setClips((c) => [...c, spec]);
+  const removeClip = (id: string) =>
+    setClips((c) => c.filter((x) => x.id !== id));
+  const previewClip = (start: number, end: number) => {
+    if (duration > 0) {
+      setTrimStart(Math.max(0, Math.min(start, duration)));
+      setTrimEnd(Math.max(start + 0.5, Math.min(end, duration)));
+    } else {
+      setTrimStart(start);
+      setTrimEnd(end);
+    }
+  };
+
+  const renderAllClips = async () => {
+    if (clips.length === 0) return;
+    setError(null);
+    setRendering(true);
+    try {
+      const res = await fetch("/api/render-clips", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobId, clips, options: baseOptions() }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Render batch gagal.");
+      router.push(`/result/${jobId}`);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Render batch gagal.");
+      setRendering(false);
+    }
+  };
+
   const startRender = async () => {
     setError(null);
     setRendering(true);
@@ -134,12 +180,7 @@ export default function EditorPage({
       (trimStart > 0.05 || trimEnd < duration - 0.05);
 
     const options: RenderOptions = {
-      subtitleStyle: transcript ? style : "none",
-      crop: { aspect: "9:16", offsetX: cropOffset },
-      hook: { text: hookText, durationSec: hookDuration },
-      music: music
-        ? { ...music, volume: musicVolume, duck }
-        : undefined,
+      ...baseOptions(),
       trim: trimmed ? { start: trimStart, end: trimEnd } : undefined,
     };
 
@@ -450,7 +491,7 @@ export default function EditorPage({
           </div>
         </Section>
 
-        {/* Render */}
+        {/* Render — single */}
         <Section step={6} title="Render Final (1080×1920)">
           {rendering ? (
             <div className="space-y-2">
@@ -460,13 +501,30 @@ export default function EditorPage({
                   style={{ width: `${percent}%` }}
                 />
               </div>
-              <p className="text-xs text-zinc-400">{renderMsg}</p>
+              <p className="text-xs text-zinc-400">
+                {renderMsg || "Memproses…"}
+              </p>
             </div>
           ) : (
             <button className="btn-primary w-full py-3" onClick={startRender}>
-              🚀 Render clip
+              🚀 Render 1 clip (trim sekarang)
             </button>
           )}
+        </Section>
+
+        {/* Render — multi-clip batch */}
+        <Section step={7} title="Multi-clip (batch)">
+          <ClipsPanel
+            jobId={jobId}
+            hasTranscript={!!transcript}
+            clips={clips}
+            currentTrim={{ start: trimStart, end: trimEnd }}
+            rendering={rendering}
+            onAdd={addClip}
+            onRemove={removeClip}
+            onPreview={previewClip}
+            onRenderAll={renderAllClips}
+          />
         </Section>
       </div>
     </div>

@@ -55,6 +55,7 @@ export async function POST(req: NextRequest) {
       status: "rendering",
       renderOptions: options,
       hasOutput: false,
+      clips: undefined, // clear any stale batch result
       progress: { percent: 0, outTimeSec: 0, done: false },
     });
 

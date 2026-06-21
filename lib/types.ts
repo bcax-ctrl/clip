@@ -96,5 +96,40 @@ export interface Job {
   hasOutput: boolean;
   renderOptions?: RenderOptions;
   progress?: RenderProgress;
+  /** results of a multi-clip batch render (Phase 6). */
+  clips?: ClipResult[];
   error?: string;
+}
+
+/** A requested clip segment (source seconds) for batch rendering. */
+export interface ClipSpec {
+  id: string;
+  start: number;
+  end: number;
+  label?: string;
+}
+
+export type ClipStatus = "pending" | "rendering" | "done" | "error";
+
+/** Render result for one clip in a batch. */
+export interface ClipResult {
+  id: string;
+  start: number;
+  end: number;
+  label?: string;
+  status: ClipStatus;
+  /** output filename inside the job dir, e.g. output-<id>.mp4 */
+  outputFile?: string;
+  percent?: number;
+  error?: string;
+}
+
+/** A suggested viral moment derived from the transcript. */
+export interface ClipSuggestion {
+  start: number;
+  end: number;
+  /** heuristic score (higher = more promising). */
+  score: number;
+  /** short text preview of what's said. */
+  preview: string;
 }

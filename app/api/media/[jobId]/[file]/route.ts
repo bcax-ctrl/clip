@@ -5,11 +5,14 @@ import { jobFile, safeSegment, FILES } from "@/lib/paths";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Only these job files may be served to the browser.
-const ALLOWED: Record<string, string> = {
-  source: FILES.source,
-  output: FILES.output,
-};
+// Map a request `file` param to an actual filename in the job dir.
+// Allows: source, output, and batch clip outputs (output-<id>.mp4).
+function resolveName(file: string): string | null {
+  if (file === "source") return FILES.source;
+  if (file === "output") return FILES.output;
+  if (/^output-[A-Za-z0-9_]+\.mp4$/.test(file)) return file;
+  return null;
+}
 
 const CONTENT_TYPE = "video/mp4";
 
@@ -18,10 +21,11 @@ export async function GET(
   { params }: { params: { jobId: string; file: string } }
 ) {
   const { jobId, file } = params;
-  if (!safeSegment(jobId) || !ALLOWED[file]) {
+  const name = resolveName(file);
+  if (!safeSegment(jobId) || !name) {
     return new Response("Not found", { status: 404 });
   }
-  const abs = jobFile(jobId, ALLOWED[file]);
+  const abs = jobFile(jobId, name);
   if (!fs.existsSync(abs)) {
     return new Response("Not found", { status: 404 });
   }

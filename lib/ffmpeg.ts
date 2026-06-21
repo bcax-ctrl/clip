@@ -18,11 +18,22 @@ interface BuiltCommand {
   totalDuration: number;
 }
 
+/** Per-render filenames (so a batch can render to distinct outputs). */
+export interface RenderIO {
+  outName?: string;
+  subtitleName?: string;
+  hookName?: string;
+}
+
 /** Build the full ffmpeg argument list for a job's final render. */
 export async function buildRenderArgs(
   jobId: string,
-  opts: RenderOptions
+  opts: RenderOptions,
+  io: RenderIO = {}
 ): Promise<BuiltCommand> {
+  const outName = io.outName ?? FILES.output;
+  const subtitleName = io.subtitleName ?? FILES.subtitle;
+  const hookName = io.hookName ?? "hook.txt";
   const dir = jobDir(jobId);
   const source = jobFile(jobId, FILES.source);
 
@@ -63,19 +74,19 @@ export async function buildRenderArgs(
 
   if (opts.subtitleStyle && opts.subtitleStyle !== "none") {
     const fontsRel = filterPath(FONTS_DIR, dir);
-    vparts.push(`subtitles=${FILES.subtitle}:fontsdir=${fontsRel}`);
+    vparts.push(`subtitles=${subtitleName}:fontsdir=${fontsRel}`);
   }
 
   const hookText = opts.hook?.text?.trim();
   if (hookText) {
-    fs.writeFileSync(jobFile(jobId, "hook.txt"), hookText, "utf8");
+    fs.writeFileSync(jobFile(jobId, hookName), hookText, "utf8");
     const dur = Math.max(0.5, opts.hook.durationSec || 3);
     const fontFile = pickFontFile();
     const fontArg = fontFile
       ? `fontfile=${filterPath(fontFile, dir)}:`
       : "font=Sans:";
     vparts.push(
-      `drawtext=textfile=hook.txt:${fontArg}fontcolor=white:fontsize=84:` +
+      `drawtext=textfile=${hookName}:${fontArg}fontcolor=white:fontsize=84:` +
         `box=1:boxcolor=black@0.55:boxborderw=26:line_spacing=14:` +
         `x=(w-text_w)/2:y=h*0.16:` +
         `enable='lt(t,${dur})':alpha='if(lt(t,0.4),t/0.4,1)'`
@@ -131,7 +142,7 @@ export async function buildRenderArgs(
     "-progress",
     "pipe:1",
     "-nostats",
-    FILES.output
+    outName
   );
 
   return { args, totalDuration };
@@ -154,19 +165,24 @@ function pickFontFile(): string | null {
   }
 }
 
-function writeProgress(jobId: string, p: RenderProgress): void {
+function writeProgress(
+  jobId: string,
+  p: RenderProgress,
+  file: string = FILES.progress
+): void {
   try {
-    fs.writeFileSync(jobFile(jobId, FILES.progress), JSON.stringify(p), "utf8");
+    fs.writeFileSync(jobFile(jobId, file), JSON.stringify(p), "utf8");
   } catch {
     /* ignore */
   }
 }
 
-export function readProgress(jobId: string): RenderProgress | null {
+export function readProgress(
+  jobId: string,
+  file: string = FILES.progress
+): RenderProgress | null {
   try {
-    return JSON.parse(
-      fs.readFileSync(jobFile(jobId, FILES.progress), "utf8")
-    ) as RenderProgress;
+    return JSON.parse(fs.readFileSync(jobFile(jobId, file), "utf8")) as RenderProgress;
   } catch {
     return null;
   }
@@ -220,20 +236,23 @@ function makeProgressParser(
 export async function renderJob(
   jobId: string,
   opts: RenderOptions,
-  onProgress?: (p: RenderProgress) => void
+  onProgress?: (p: RenderProgress) => void,
+  io: RenderIO = {},
+  progressFile: string = FILES.progress
 ): Promise<string> {
   const dir = jobDir(jobId);
-  const { args, totalDuration } = await buildRenderArgs(jobId, opts);
+  const outName = io.outName ?? FILES.output;
+  const { args, totalDuration } = await buildRenderArgs(jobId, opts, io);
 
-  writeProgress(jobId, { percent: 0, outTimeSec: 0, done: false });
+  writeProgress(jobId, { percent: 0, outTimeSec: 0, done: false }, progressFile);
 
   const logStream = fs.createWriteStream(jobFile(jobId, FILES.renderLog), {
-    flags: "w",
+    flags: "a",
   });
-  logStream.write(`ffmpeg ${args.join(" ")}\n\n`);
+  logStream.write(`\nffmpeg ${args.join(" ")}\n\n`);
 
   const parse = makeProgressParser(totalDuration, (p) => {
-    writeProgress(jobId, p);
+    writeProgress(jobId, p, progressFile);
     onProgress?.(p);
   });
 
@@ -251,14 +270,14 @@ export async function renderJob(
       done: true,
       error: `ffmpeg exit ${res.code}. Lihat render.log untuk detail.`,
     };
-    writeProgress(jobId, err);
+    writeProgress(jobId, err, progressFile);
     throw new Error(err.error);
   }
 
-  writeProgress(jobId, {
-    percent: 100,
-    outTimeSec: totalDuration,
-    done: true,
-  });
-  return jobFile(jobId, FILES.output);
+  writeProgress(
+    jobId,
+    { percent: 100, outTimeSec: totalDuration, done: true },
+    progressFile
+  );
+  return jobFile(jobId, outName);
 }
