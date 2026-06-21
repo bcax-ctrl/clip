@@ -1,0 +1,157 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import type { SubtitleStyleId, Transcript } from "@/lib/types";
+import {
+  buildCaptionLines,
+  activeLine,
+  activeWordIndex,
+  CaptionLine,
+} from "@/lib/captions";
+
+interface Props {
+  src: string;
+  transcript: Transcript | null;
+  style: SubtitleStyleId;
+  cropOffset: number; // -1..1
+  hookText: string;
+  hookDuration: number;
+}
+
+export default function VideoPreview({
+  src,
+  transcript,
+  style,
+  cropOffset,
+  hookText,
+  hookDuration,
+}: Props) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [time, setTime] = useState(0);
+  const [lines, setLines] = useState<CaptionLine[]>([]);
+
+  useEffect(() => {
+    setLines(transcript ? buildCaptionLines(transcript, style) : []);
+  }, [transcript, style]);
+
+  // rAF loop for smooth word-level sync while playing.
+  useEffect(() => {
+    let raf = 0;
+    const tick = () => {
+      const v = videoRef.current;
+      if (v) setTime(v.currentTime);
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const objX = ((cropOffset + 1) / 2) * 100; // 0..100%
+  const line = activeLine(lines, time);
+  const showHook = !!hookText.trim() && time < hookDuration;
+
+  return (
+    <div className="mx-auto w-full max-w-[340px]">
+      <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-ink-500 bg-black shadow-glow">
+        <video
+          ref={videoRef}
+          src={src}
+          controls
+          playsInline
+          className="absolute inset-0 h-full w-full"
+          style={{ objectFit: "cover", objectPosition: `${objX}% 50%` }}
+        />
+
+        {/* Hook overlay (first N seconds) */}
+        {showHook && (
+          <div className="pointer-events-none absolute inset-x-0 top-[14%] flex justify-center px-4">
+            <div className="animate-[fadein_0.4s_ease] rounded-xl bg-black/60 px-4 py-2 text-center text-xl font-extrabold leading-tight text-white">
+              {hookText}
+            </div>
+          </div>
+        )}
+
+        {/* Subtitle overlay */}
+        {line && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-[12%] flex justify-center px-3">
+            <CaptionRender line={line} style={style} time={time} />
+          </div>
+        )}
+      </div>
+
+      <p className="mt-2 text-center text-xs text-zinc-500">
+        Preview perkiraan — hasil burn final dirender via ffmpeg/libass.
+      </p>
+
+      <style jsx>{`
+        @keyframes fadein {
+          from {
+            opacity: 0;
+            transform: translateY(-6px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+function CaptionRender({
+  line,
+  style,
+  time,
+}: {
+  line: CaptionLine;
+  style: SubtitleStyleId;
+  time: number;
+}) {
+  if (style === "clean") {
+    return (
+      <span className="rounded-lg bg-black/70 px-3 py-1.5 text-center text-sm font-semibold text-white">
+        {line.text}
+      </span>
+    );
+  }
+
+  if (style === "hormozi") {
+    return (
+      <span
+        className="text-center text-2xl font-black uppercase leading-none text-[#FFD400]"
+        style={{ WebkitTextStroke: "2px black", letterSpacing: "0.02em" }}
+      >
+        {line.text}
+      </span>
+    );
+  }
+
+  // karaoke: highlight the active word
+  const active = activeWordIndex(line, time);
+  return (
+    <span
+      className="text-center text-xl font-extrabold leading-tight text-white"
+      style={{ textShadow: "0 2px 6px rgba(0,0,0,0.9)" }}
+    >
+      {line.words.map((w, i) => (
+        <span
+          key={i}
+          className="transition-all"
+          style={
+            i === active
+              ? {
+                  color: "#FFE600",
+                  display: "inline-block",
+                  transform: "scale(1.15)",
+                }
+              : undefined
+          }
+        >
+          {w.text}
+          {i < line.words.length - 1 ? " " : ""}
+        </span>
+      ))}
+    </span>
+  );
+}

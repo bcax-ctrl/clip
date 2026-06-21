@@ -7,9 +7,6 @@ const nextConfig = {
       bodySizeLimit: "2gb",
     },
   },
-  // We spawn ffmpeg/whisper/yt-dlp via child_process from route handlers,
-  // so keep them out of the bundle.
-  serverExternalPackages: [],
 };
 
 module.exports = nextConfig;
