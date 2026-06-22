@@ -28,7 +28,13 @@ export async function POST(req: NextRequest) {
 
     setStatus(jobId, "transcribing");
     try {
-      const transcript = await transcribeJob(jobId, model ?? "base", language);
+      const fallbackModel =
+        (process.env.WHISPER_MODEL as WhisperModel | undefined) ?? "base";
+      const transcript = await transcribeJob(
+        jobId,
+        model ?? fallbackModel,
+        language
+      );
       const updated = updateJob(jobId, {
         status: "transcribed",
         hasTranscript: true,

@@ -103,6 +103,35 @@ npm run build && npm run start
 
 Buka http://localhost:3000.
 
+### 🐳 Deploy online (Docker / Railway)
+
+Karena ClipForge butuh **ffmpeg + Whisper + yt-dlp**, hosting serverless
+(Vercel/Netlify) **tidak cukup** — perlu container. `Dockerfile` di repo ini
+sudah memasang ketiga tool tersebut.
+
+**Railway (paling gampang, ada free tier):**
+
+1. Daftar di [railway.app](https://railway.app) (login GitHub).
+2. **New Project → Deploy from GitHub repo →** pilih repo ini.
+3. Railway otomatis mendeteksi `Dockerfile` (lihat `railway.json`) dan build.
+4. Buka tab **Settings → Networking → Generate Domain** untuk dapat URL publik.
+5. (Opsional) **Settings → Variables**: set `WHISPER_MODEL=tiny` kalau RAM
+   terbatas, atau `base`/`small` kalau plan lebih besar.
+6. (Disarankan) **Settings → Volumes**: mount volume ke `/app/jobs` supaya hasil
+   render & upload tidak hilang saat re-deploy.
+
+> ⚠️ Whisper butuh RAM (model `base` ≈ 1–2 GB). Di free tier pakai
+> `WHISPER_MODEL=tiny`. Video panjang + render ffmpeg juga butuh CPU; plan
+> berbayar Railway/VPS jauh lebih lancar.
+
+**Docker lokal / VPS sendiri:**
+
+```bash
+docker build -t clipforge .
+docker run -p 3000:3000 -v $(pwd)/jobs:/app/jobs clipforge
+# buka http://localhost:3000
+```
+
 **Shortcut editor:** `Spasi` play/pause · `I` tandai awal clip · `O` tandai
 akhir clip. Job lama bisa dihapus (beserta file-nya) dari daftar "Job terbaru"
 di home (tombol ✕).
