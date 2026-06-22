@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { SubtitleStyleId, Transcript } from "@/lib/types";
+import type { FilterLook, SubtitleStyleId, Transcript } from "@/lib/types";
 import {
   buildCaptionLines,
   activeLine,
@@ -34,7 +34,19 @@ interface Props {
   clipEnd?: number;
   onTime?: (t: number) => void;
   onDuration?: (d: number) => void;
+  /** viral effects preview */
+  look?: FilterLook;
+  progressBar?: boolean;
+  endCta?: { text: string; durationSec: number } | null;
 }
+
+const LOOK_CSS: Record<FilterLook, string> = {
+  none: "none",
+  vivid: "saturate(1.45) contrast(1.12) brightness(1.02)",
+  warm: "saturate(1.2) sepia(0.18)",
+  cool: "saturate(1.15) hue-rotate(-12deg)",
+  mono: "grayscale(1) contrast(1.15)",
+};
 
 const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview(
   {
@@ -46,6 +58,9 @@ const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview
     hookDuration,
     clipStart,
     clipEnd,
+    look,
+    progressBar,
+    endCta,
     onTime,
     onDuration,
   },
@@ -110,6 +125,17 @@ const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview
     time >= hookStart &&
     time < hookStart + hookDuration;
 
+  // Viral effects preview math
+  const clipS = clipStart ?? 0;
+  const clipE = clipEnd && clipEnd > 0 ? clipEnd : Infinity;
+  const clipDur = Number.isFinite(clipE) ? clipE - clipS : 0;
+  const barFrac =
+    clipDur > 0 ? Math.min(1, Math.max(0, (time - clipS) / clipDur)) : 0;
+  const ctaN = endCta?.durationSec ?? 0;
+  const ctaStart = Number.isFinite(clipE) ? clipE - ctaN : Infinity;
+  const showCta =
+    !!endCta?.text?.trim() && ctaN > 0 && time >= ctaStart && time <= clipE;
+
   return (
     <div className="mx-auto w-full max-w-[340px]">
       <div className="relative aspect-[9/16] overflow-hidden rounded-2xl border border-ink-500 bg-black shadow-glow">
@@ -120,7 +146,11 @@ const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview
           playsInline
           onLoadedMetadata={(e) => onDuration?.(e.currentTarget.duration)}
           className="absolute inset-0 h-full w-full"
-          style={{ objectFit: "cover", objectPosition: `${objX}% 50%` }}
+          style={{
+            objectFit: "cover",
+            objectPosition: `${objX}% 50%`,
+            filter: LOOK_CSS[look ?? "none"],
+          }}
         />
 
         {/* Hook overlay (first N seconds) */}
@@ -132,10 +162,29 @@ const VideoPreview = forwardRef<VideoPreviewHandle, Props>(function VideoPreview
           </div>
         )}
 
+        {/* End CTA overlay (last N seconds) */}
+        {showCta && (
+          <div className="pointer-events-none absolute inset-x-0 top-[42%] flex justify-center px-4">
+            <div className="animate-[fadein_0.4s_ease] rounded-xl bg-brand/90 px-4 py-2 text-center text-lg font-extrabold leading-tight text-white">
+              {endCta?.text}
+            </div>
+          </div>
+        )}
+
         {/* Subtitle overlay */}
         {line && (
           <div className="pointer-events-none absolute inset-x-0 bottom-[12%] flex justify-center px-3">
             <CaptionRender line={line} style={style} time={time} />
+          </div>
+        )}
+
+        {/* Retention progress bar */}
+        {progressBar && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1.5 bg-white/20">
+            <div
+              className="h-full bg-brand"
+              style={{ width: `${barFrac * 100}%` }}
+            />
           </div>
         )}
       </div>

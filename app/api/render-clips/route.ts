@@ -103,6 +103,7 @@ async function renderBatch(
           outName: `output-${clip.id}.mp4`,
           subtitleName: `subtitle-${clip.id}.ass`,
           hookName: `hook-${clip.id}.txt`,
+          ctaName: `cta-${clip.id}.txt`,
         },
         `progress-${clip.id}.json`
       );

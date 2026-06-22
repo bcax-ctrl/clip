@@ -23,6 +23,23 @@ export interface RenderIO {
   outName?: string;
   subtitleName?: string;
   hookName?: string;
+  ctaName?: string;
+}
+
+/** Map a color-grade preset to an ffmpeg filter chain (or null for none). */
+function lookFilter(look: string | undefined): string | null {
+  switch (look) {
+    case "vivid":
+      return "eq=contrast=1.12:saturation=1.45:brightness=0.02";
+    case "warm":
+      return "eq=saturation=1.2,colorbalance=rs=0.12:gs=0.04:bs=-0.10";
+    case "cool":
+      return "eq=saturation=1.15,colorbalance=rs=-0.10:gs=0.0:bs=0.12";
+    case "mono":
+      return "hue=s=0,eq=contrast=1.15";
+    default:
+      return null;
+  }
 }
 
 /** Build the full ffmpeg argument list for a job's final render. */
@@ -34,6 +51,7 @@ export async function buildRenderArgs(
   const outName = io.outName ?? FILES.output;
   const subtitleName = io.subtitleName ?? FILES.subtitle;
   const hookName = io.hookName ?? "hook.txt";
+  const ctaName = io.ctaName ?? "cta.txt";
   const dir = jobDir(jobId);
   const source = jobFile(jobId, FILES.source);
 
@@ -72,24 +90,53 @@ export async function buildRenderArgs(
     "setsar=1",
   ];
 
+  // Color grade (applied to the footage, before subtitles/overlays).
+  const effects = opts.effects;
+  const look = lookFilter(effects?.look);
+  if (look) vparts.push(look);
+
   if (opts.subtitleStyle && opts.subtitleStyle !== "none") {
     const fontsRel = filterPath(FONTS_DIR, dir);
     vparts.push(`subtitles=${subtitleName}:fontsdir=${fontsRel}`);
   }
 
+  const fontFile = pickFontFile();
+  const fontArg = fontFile
+    ? `fontfile=${filterPath(fontFile, dir)}:`
+    : "font=Sans:";
+
   const hookText = opts.hook?.text?.trim();
   if (hookText) {
     fs.writeFileSync(jobFile(jobId, hookName), hookText, "utf8");
     const dur = Math.max(0.5, opts.hook.durationSec || 3);
-    const fontFile = pickFontFile();
-    const fontArg = fontFile
-      ? `fontfile=${filterPath(fontFile, dir)}:`
-      : "font=Sans:";
     vparts.push(
       `drawtext=textfile=${hookName}:${fontArg}fontcolor=white:fontsize=84:` +
         `box=1:boxcolor=black@0.55:boxborderw=26:line_spacing=14:` +
         `x=(w-text_w)/2:y=h*0.16:` +
         `enable='lt(t,${dur})':alpha='if(lt(t,0.4),t/0.4,1)'`
+    );
+  }
+
+  // Retention progress bar (needs a known duration).
+  if (effects?.progressBar && totalDuration > 0) {
+    const D = totalDuration.toFixed(2);
+    vparts.push(`drawbox=x=0:y=ih-14:w=iw:h=14:color=white@0.18:t=fill`);
+    vparts.push(
+      `drawbox=x=0:y=ih-14:w='iw*min(t/${D},1)':h=14:color=0xFF4D6D@0.95:t=fill`
+    );
+  }
+
+  // End call-to-action (last N seconds), fading in.
+  const ctaText = effects?.endCta?.text?.trim();
+  if (ctaText && totalDuration > 0) {
+    fs.writeFileSync(jobFile(jobId, ctaName), ctaText, "utf8");
+    const n = Math.max(0.5, effects?.endCta?.durationSec || 3);
+    const startAt = Math.max(0, totalDuration - n).toFixed(2);
+    vparts.push(
+      `drawtext=textfile=${ctaName}:${fontArg}fontcolor=white:fontsize=76:` +
+        `box=1:boxcolor=0xFF2D55@0.85:boxborderw=28:line_spacing=12:` +
+        `x=(w-text_w)/2:y=h*0.44:` +
+        `enable='gte(t,${startAt})':alpha='if(gte(t,${startAt}),min(1,(t-${startAt})/0.4),0)'`
     );
   }
 

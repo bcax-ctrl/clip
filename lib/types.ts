@@ -61,6 +61,19 @@ export interface HookSettings {
   durationSec: number;
 }
 
+/** Color-grade "look" presets to make clips pop. */
+export type FilterLook = "none" | "vivid" | "warm" | "cool" | "mono";
+
+/** Extra viral-oriented effects baked at render time. */
+export interface ViralEffects {
+  /** color grade preset. */
+  look: FilterLook;
+  /** animated retention progress bar at the bottom. */
+  progressBar: boolean;
+  /** call-to-action shown in the last few seconds. */
+  endCta?: { text: string; durationSec: number };
+}
+
 export interface RenderOptions {
   subtitleStyle: SubtitleStyleId;
   crop: CropSettings;
@@ -68,6 +81,8 @@ export interface RenderOptions {
   music?: MusicSelection;
   /** optional trim of the source before everything else. */
   trim?: { start: number; end: number };
+  /** optional viral effects (color grade, progress bar, end CTA). */
+  effects?: ViralEffects;
 }
 
 export interface RenderProgress {

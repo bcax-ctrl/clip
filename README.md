@@ -24,6 +24,7 @@ Upload / YouTube  →  Whisper (subtitle)  →  Pilih style + musik + crop + hoo
 | 4 | **Trim / pilih segmen clip** dari video panjang (tandai awal/akhir dari posisi player, preview nge-loop di range), crop 16:9 → 9:16 dengan slider geser fokus, hook text (drawtext + fade-in), render gabungan 1080×1920, progress bar real-time (SSE). |
 | 5 | PWA (manifest + service worker + "Add to Home Screen"), Notification API ("Clip kamu udah jadi! 🎬"). |
 | 6 | **Auto-suggest momen** (deteksi highlight dari transkrip: densitas bicara + jeda natural + cue ?/!/angka) & **Multi-clip** (antri banyak segmen → render berurutan → galeri hasil, download per-clip). |
+| Efek Viral | **Color grade** (Vivid/Warm/Cool/B&W via `eq`/`colorbalance`/`hue`), **retention progress bar** (drawbox animasi), **End CTA** "Follow for more 🔥" di detik terakhir (drawtext fade-in). Semua ada live preview. |
 
 ---
 

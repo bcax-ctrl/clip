@@ -7,6 +7,7 @@ import StylePicker from "@/components/StylePicker";
 import SubtitleEditor from "@/components/SubtitleEditor";
 import MusicPicker, { MusicValue } from "@/components/MusicPicker";
 import ClipsPanel from "@/components/ClipsPanel";
+import EffectsPanel from "@/components/EffectsPanel";
 import { showNotification, notifyEnabledPref } from "@/lib/notify";
 import type {
   Job,
@@ -14,6 +15,7 @@ import type {
   SubtitleStyleId,
   RenderOptions,
   ClipSpec,
+  FilterLook,
 } from "@/lib/types";
 
 type WhisperModel = "tiny" | "base" | "small";
@@ -52,6 +54,12 @@ export default function EditorPage({
   const [cropOffset, setCropOffset] = useState(0);
   const [hookText, setHookText] = useState("");
   const [hookDuration, setHookDuration] = useState(3);
+
+  // Viral effects
+  const [look, setLook] = useState<FilterLook>("none");
+  const [progressBar, setProgressBar] = useState(false);
+  const [ctaOn, setCtaOn] = useState(false);
+  const [ctaText, setCtaText] = useState("Follow for more 🔥");
 
   // Multi-clip queue
   const [clips, setClips] = useState<ClipSpec[]>([]);
@@ -162,6 +170,14 @@ export default function EditorPage({
     crop: { aspect: "9:16", offsetX: cropOffset },
     hook: { text: hookText, durationSec: hookDuration },
     music: music ? { ...music, volume: musicVolume, duck } : undefined,
+    effects: {
+      look,
+      progressBar,
+      endCta:
+        ctaOn && ctaText.trim()
+          ? { text: ctaText, durationSec: 3 }
+          : undefined,
+    },
   });
 
   // Clip queue handlers
@@ -296,6 +312,9 @@ export default function EditorPage({
           hookDuration={hookDuration}
           clipStart={trimStart}
           clipEnd={trimEnd}
+          look={look}
+          progressBar={progressBar}
+          endCta={ctaOn && ctaText.trim() ? { text: ctaText, durationSec: 3 } : null}
           onTime={(t) => (currentTimeRef.current = t)}
           onDuration={applyDuration}
         />
@@ -526,8 +545,22 @@ export default function EditorPage({
           </div>
         </Section>
 
+        {/* Viral effects */}
+        <Section step={6} title="Efek Viral">
+          <EffectsPanel
+            look={look}
+            onLook={setLook}
+            progressBar={progressBar}
+            onProgressBar={setProgressBar}
+            ctaOn={ctaOn}
+            onCtaOn={setCtaOn}
+            ctaText={ctaText}
+            onCtaText={setCtaText}
+          />
+        </Section>
+
         {/* Render — single */}
-        <Section step={6} title="Render Final (1080×1920)">
+        <Section step={7} title="Render Final (1080×1920)">
           {rendering ? (
             <div className="space-y-2">
               <div className="h-3 w-full overflow-hidden rounded-full bg-ink-500">
@@ -548,7 +581,7 @@ export default function EditorPage({
         </Section>
 
         {/* Render — multi-clip batch */}
-        <Section step={7} title="Multi-clip (batch)">
+        <Section step={8} title="Multi-clip (batch)">
           <ClipsPanel
             jobId={jobId}
             hasTranscript={!!transcript}
