@@ -5,6 +5,7 @@ import express from "express";
 import cors from "cors";
 
 import { pool } from "./db.js";
+import { migrate } from "./migrate.js";
 import { authenticate } from "./middleware/auth.js";
 import { rateLimit } from "./middleware/rateLimit.js";
 import authRoutes from "./routes/auth.js";
@@ -55,4 +56,21 @@ app.use((err, _req, res, _next) => {
 });
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`[neuromax] API gateway listening on :${PORT}`));
+
+// Ensure the schema exists before accepting traffic. Retry briefly so we don't
+// crash-loop if the managed database is still coming up.
+async function start() {
+  for (let attempt = 1; attempt <= 10; attempt++) {
+    try {
+      await migrate();
+      break;
+    } catch (err) {
+      console.warn(`[migrate] attempt ${attempt} failed: ${err.message}`);
+      if (attempt === 10) console.error("[migrate] giving up; starting anyway");
+      else await new Promise((r) => setTimeout(r, 3000));
+    }
+  }
+  app.listen(PORT, () => console.log(`[neuromax] API gateway listening on :${PORT}`));
+}
+
+start();

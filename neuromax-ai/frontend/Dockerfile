@@ -6,7 +6,12 @@ COPY package.json ./
 RUN npm install
 
 COPY . .
-# NEXT_PUBLIC_* vars are inlined at build time; provide sensible container defaults.
+# NEXT_PUBLIC_* vars are inlined at build time. On Railway these are passed as
+# build args (declare matching service variables); locally compose uses .env.
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_WS_URL
+ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+ENV NEXT_PUBLIC_WS_URL=${NEXT_PUBLIC_WS_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
