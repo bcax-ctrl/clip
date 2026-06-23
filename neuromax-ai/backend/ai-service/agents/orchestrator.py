@@ -44,7 +44,13 @@ class MasterOrchestrator:
     def agent_names(self) -> list[dict[str, str]]:
         return [{"name": a.name, "label": a.label} for a in self._agents]
 
-    async def analyze(self, symbol: str, user_id: str | None = None) -> dict[str, Any]:
+    async def analyze(
+        self,
+        symbol: str,
+        user_id: str | None = None,
+        query: str | None = None,
+        market: str | None = None,
+    ) -> dict[str, Any]:
         started = time.perf_counter()
         symbol = symbol.upper()
 
@@ -63,6 +69,11 @@ class MasterOrchestrator:
             }
             for r in results
         ]
+
+        # Pass the user's actual question to the orchestrator so the synthesis
+        # answers it directly (not just a generic readout).
+        if query:
+            findings["user_query"] = {"query": query, "market": market or "crypto"}
 
         # Recall relevant past analyses to give Claude continuity.
         memories = await self._memory.search(symbol, top_k=3)

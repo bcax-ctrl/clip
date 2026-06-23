@@ -17,9 +17,10 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import re
 from typing import Any
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
@@ -46,8 +47,37 @@ forex = ForexFeed()
 
 # ─── Request models ──────────────────────────────────────────────────────────
 class AnalyzeRequest(BaseModel):
-    symbol: str = Field(..., examples=["BTC"])
+    # Accept either a direct ticker (`symbol`) or a natural-language `query`
+    # (the ticker is extracted from it). `market` is an optional hint.
+    symbol: str | None = Field(default=None, examples=["BTC"])
+    query: str | None = Field(default=None, examples=["BTC momentum?"])
+    market: str | None = Field(default=None, examples=["crypto"])
     user_id: str | None = None
+
+
+# Recognised tickers and common names → canonical ticker, for query parsing.
+_NAME_TO_TICKER: dict[str, str] = {
+    "btc": "BTC", "bitcoin": "BTC",
+    "eth": "ETH", "ethereum": "ETH", "ether": "ETH",
+    "sol": "SOL", "solana": "SOL",
+    "bnb": "BNB", "binance": "BNB",
+    "xrp": "XRP", "ripple": "XRP",
+    "ada": "ADA", "cardano": "ADA",
+    "doge": "DOGE", "dogecoin": "DOGE",
+    "avax": "AVAX", "avalanche": "AVAX",
+    "matic": "MATIC", "polygon": "MATIC",
+    "dot": "DOT", "polkadot": "DOT",
+}
+
+
+def resolve_symbol(req: AnalyzeRequest) -> str:
+    """Resolve a ticker from an explicit symbol or by parsing the query."""
+    if req.symbol:
+        return req.symbol.upper()
+    for token in re.findall(r"[a-zA-Z]+", req.query or ""):
+        if token.lower() in _NAME_TO_TICKER:
+            return _NAME_TO_TICKER[token.lower()]
+    return "BTC"  # sensible default when nothing recognisable is found
 
 
 class ChatRequest(BaseModel):
@@ -78,7 +108,12 @@ async def list_agents() -> dict[str, Any]:
 
 @app.post("/api/v1/analyze")
 async def analyze(req: AnalyzeRequest) -> dict[str, Any]:
-    return await get_orchestrator().analyze(req.symbol, user_id=req.user_id)
+    if not req.symbol and not req.query:
+        raise HTTPException(status_code=422, detail="Provide 'symbol' or 'query'.")
+    symbol = resolve_symbol(req)
+    return await get_orchestrator().analyze(
+        symbol, user_id=req.user_id, query=req.query, market=req.market
+    )
 
 
 @app.get("/api/v1/markets")
