@@ -92,28 +92,36 @@ class ClaudeClient:
         self._openai_key = settings.openai_api_key
 
     async def synthesize(self, symbol: str, findings: dict[str, Any]) -> dict[str, Any]:
-        """Turn agent findings into a structured, validated insight."""
+        """Turn agent findings into a structured, validated insight.
+
+        Uses a *forced tool call* to guarantee the model returns JSON matching
+        ``_INSIGHT_SCHEMA``. This is portable across SDK/model versions (no
+        dependency on the newer ``output_config`` parameter). Note: forced tool
+        use is incompatible with extended thinking, so we omit ``thinking`` here.
+        """
         user_content = (
             f"Asset under analysis: {symbol}\n\n"
             f"Agent findings (JSON):\n{json.dumps(findings, indent=2, default=str)}\n\n"
-            "Synthesise these into a single recommendation."
+            "Synthesise these into a single recommendation by calling emit_insight."
         )
+        tool = {
+            "name": "emit_insight",
+            "description": "Emit the final synthesised, bilingual trading insight.",
+            "input_schema": _INSIGHT_SCHEMA,
+        }
         try:
             response = await self._client.messages.create(
                 model=self._model,
                 max_tokens=self._max_tokens,
-                thinking={"type": "adaptive"},
                 system=_SYSTEM_PROMPT,
-                output_config={"format": {"type": "json_schema", "schema": _INSIGHT_SCHEMA}},
+                tools=[tool],
+                tool_choice={"type": "tool", "name": "emit_insight"},
                 messages=[{"role": "user", "content": user_content}],
             )
-            text = next((b.text for b in response.content if b.type == "text"), "{}")
-            data = json.loads(text)
-        except anthropic.APIError as exc:
-            logger.warning("Claude synthesize failed: %s", exc)
-            data = await self._fallback_synthesis(symbol, findings)
-        except (json.JSONDecodeError, StopIteration) as exc:
-            logger.warning("Could not parse Claude output: %s", exc)
+            block = next(b for b in response.content if b.type == "tool_use")
+            data = dict(block.input)
+        except Exception as exc:  # API error, auth error, or parse issue
+            logger.warning("Claude synthesize failed (%s); using fallback", exc)
             data = await self._fallback_synthesis(symbol, findings)
 
         # Enforce ranges the schema can't express.
