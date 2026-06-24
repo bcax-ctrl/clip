@@ -1,0 +1,13 @@
+{
+  "name": "neuromax-contracts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "compile": "solcjs --bin --abi NeuroMaxTrader.sol -o build",
+    "deploy": "node deploy.js"
+  },
+  "dependencies": {
+    "ethers": "^6.13.4",
+    "solc": "^0.8.24"
+  }
+}
