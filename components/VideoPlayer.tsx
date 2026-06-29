@@ -20,6 +20,7 @@ export default function VideoPlayer({ clip, transcript, jobId }: Props) {
   const [duration, setDuration] = useState(0)
   const [subtitleStyle, setSubtitleStyle] = useState<SubtitleStyle>('yellow')
   const [showSubtitles, setShowSubtitles] = useState(true)
+  const [videoError, setVideoError] = useState(false)
 
   const videoUrl = `/api/clips/${jobId}/${clip.id}?layer=v11_final`
 
@@ -29,6 +30,7 @@ export default function VideoPlayer({ clip, transcript, jobId }: Props) {
     video.load()
     setCurrentTime(0)
     setIsPlaying(false)
+    setVideoError(false)
   }, [clip.id])
 
   function togglePlay() {
@@ -48,6 +50,14 @@ export default function VideoPlayer({ clip, transcript, jobId }: Props) {
     <div className="flex flex-col h-full">
       <div className="relative bg-black flex-1 flex items-center justify-center">
         <div className="relative h-full aspect-[9/16] max-h-full">
+          {videoError ? (
+            <div className="w-full h-full flex flex-col items-center justify-center gap-3 bg-white/5 rounded-lg">
+              <svg className="w-10 h-10 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.36a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <p className="text-white/40 text-sm">Video unavailable</p>
+            </div>
+          ) : (
           <video
             ref={videoRef}
             src={videoUrl}
@@ -56,6 +66,7 @@ export default function VideoPlayer({ clip, transcript, jobId }: Props) {
             onDurationChange={() => setDuration(videoRef.current?.duration || 0)}
             onEnded={() => setIsPlaying(false)}
             onClick={togglePlay}
+            onError={() => setVideoError(true)}
           />
 
           {showSubtitles && (

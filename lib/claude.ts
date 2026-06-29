@@ -16,7 +16,48 @@ For each clip, return:
 
 Return ONLY a valid JSON array, no explanation.`
 
+const DEMO_CLIPS: Array<{ title: string; start: number; end: number; hook: string; score: number; reason: string }> = [
+  {
+    title: "From Zero to a Million Followers",
+    start: 0,
+    end: 60,
+    hook: "This is where everything changed for me...",
+    score: 9,
+    reason: "Opens with a powerful transformation hook that creates immediate curiosity and relatability for aspiring creators.",
+  },
+  {
+    title: "The Secret Nobody Tells You",
+    start: 30,
+    end: 80,
+    hook: "The one thing most people get completely wrong about content creation.",
+    score: 8,
+    reason: "Contrarian framing combined with personal vulnerability ('I almost quit') drives high watch-time and shares.",
+  },
+  {
+    title: "The Framework That Changed Everything",
+    start: 60,
+    end: 100,
+    hook: "The secret is not what you're posting — it's when and why.",
+    score: 7,
+    reason: "Actionable promise with a counter-intuitive twist — high save rate potential as viewers want to reference it later.",
+  },
+]
+
 export async function detectViralClips(transcript: TranscriptSegment[]): Promise<Clip[]> {
+  if (process.env.DEMO_MODE === 'true') {
+    return DEMO_CLIPS.map((c) => ({
+      id: uuidv4(),
+      title: c.title,
+      start: c.start,
+      end: c.end,
+      hook: c.hook,
+      score: c.score,
+      reason: c.reason,
+      duration: c.end - c.start,
+      layers: {},
+    }))
+  }
+
   const transcriptText = transcript
     .map(s => `[${formatTime(s.start)} - ${formatTime(s.end)}] ${s.text}`)
     .join('\n')

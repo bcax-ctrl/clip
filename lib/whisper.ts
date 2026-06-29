@@ -6,7 +6,26 @@ import { TranscriptSegment } from './types'
 
 const execAsync = promisify(exec)
 
+const DEMO_SEGMENTS: TranscriptSegment[] = [
+  { start: 0, end: 9.5, text: "This is where everything changed for me..." },
+  { start: 10, end: 19.5, text: "I went from zero to a million followers in just six months." },
+  { start: 20, end: 29.5, text: "Nobody believed it was possible, but here's exactly how I did it." },
+  { start: 30, end: 39.5, text: "The one thing most people get completely wrong about content creation." },
+  { start: 40, end: 49.5, text: "I almost quit three times before I discovered this strategy." },
+  { start: 50, end: 59.5, text: "What happened next absolutely shocked even the people closest to me." },
+  { start: 60, end: 69.5, text: "The secret is not what you're posting — it's when and why." },
+  { start: 70, end: 79.5, text: "I'm going to show you the exact framework I use every single day." },
+  { start: 80, end: 89.5, text: "This moment right here is what every creator needs to understand." },
+  { start: 90, end: 99.5, text: "If you take nothing else from this video, remember this one thing." },
+]
+
 export async function transcribeVideo(inputPath: string, outputDir: string): Promise<TranscriptSegment[]> {
+  if (process.env.DEMO_MODE === 'true') {
+    fs.mkdirSync(outputDir, { recursive: true })
+    fs.writeFileSync(path.join(outputDir, 'transcript.json'), JSON.stringify(DEMO_SEGMENTS, null, 2))
+    return DEMO_SEGMENTS
+  }
+
   const transcriptDir = path.join(outputDir, 'transcript')
   fs.mkdirSync(transcriptDir, { recursive: true })
 

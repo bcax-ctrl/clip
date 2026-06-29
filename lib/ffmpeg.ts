@@ -32,8 +32,16 @@ export async function generateClip(
   outputDir: string,
   transcript: TranscriptSegment[]
 ): Promise<string> {
-  await checkFFmpeg()
   fs.mkdirSync(outputDir, { recursive: true })
+
+  if (process.env.DEMO_MODE === 'true') {
+    const ext = path.extname(inputPath) || '.mp4'
+    const outputPath = path.join(outputDir, `clip_v11_final${ext}`)
+    fs.copyFileSync(inputPath, outputPath)
+    return outputPath
+  }
+
+  await checkFFmpeg()
 
   const outputPath = path.join(outputDir, 'clip_v11_final.mp4')
   const subtitleFilter = buildSubtitleDrawtext(transcript, clip.start, clip.end)

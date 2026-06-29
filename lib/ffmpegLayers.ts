@@ -35,6 +35,18 @@ export async function generateAllLayers(
 ): Promise<LayerFiles> {
   fs.mkdirSync(outputDir, { recursive: true })
 
+  if (process.env.DEMO_MODE === 'true') {
+    const layerNames = ['v1_raw', 'v2_base', 'v4_bottomvignette', 'v5_vignette', 'v6_lightleak', 'v7_dust', 'v8_grain', 'v9_grade1', 'v10_grade2', 'v11_final']
+    const layers: LayerFiles = {}
+    for (const name of layerNames) {
+      const ext = path.extname(inputPath) || '.mp4'
+      const outPath = path.join(outputDir, `clip_${name}${ext}`)
+      fs.copyFileSync(inputPath, outPath)
+      layers[name as keyof LayerFiles] = outPath
+    }
+    return layers
+  }
+
   const ss = clipStart.toFixed(3)
   const to = clipEnd.toFixed(3)
   const scale = buildScaleFilter()
