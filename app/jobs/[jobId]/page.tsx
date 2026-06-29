@@ -41,6 +41,28 @@ export default function JobPage() {
     return () => clearInterval(interval)
   }, [fetchJob, job?.status])
 
+  // Set dynamic page title
+  useEffect(() => {
+    if (!job) return
+    if (job.status === 'done') {
+      document.title = `Results: ${job.fileName} — ClipMine`
+    } else {
+      document.title = 'Processing — ClipMine'
+    }
+    return () => { document.title = 'ClipMine' }
+  }, [job])
+
+  // Close tooltip on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (tipRef.current && !tipRef.current.contains(e.target as Node)) {
+        setShowDownloadTip(false)
+      }
+    }
+    if (showDownloadTip) document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [showDownloadTip])
+
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -67,28 +89,6 @@ export default function JobPage() {
   }
 
   const isProcessing = job.status !== 'done' && job.status !== 'error'
-
-  // Set dynamic page title
-  useEffect(() => {
-    if (!job) return
-    if (job.status === 'done') {
-      document.title = `Results: ${job.fileName} — ClipMine`
-    } else {
-      document.title = 'Processing — ClipMine'
-    }
-    return () => { document.title = 'ClipMine' }
-  }, [job])
-
-  // Close tooltip on outside click
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (tipRef.current && !tipRef.current.contains(e.target as Node)) {
-        setShowDownloadTip(false)
-      }
-    }
-    if (showDownloadTip) document.addEventListener('mousedown', handleClick)
-    return () => document.removeEventListener('mousedown', handleClick)
-  }, [showDownloadTip])
 
   return (
     <div className="flex flex-col h-screen bg-[#0A0A0A]">
