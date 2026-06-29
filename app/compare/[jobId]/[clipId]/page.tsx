@@ -6,11 +6,16 @@ import { Clip, LAYER_LABELS } from '@/lib/types'
 import BeforeAfterPlayer from '@/components/BeforeAfterPlayer'
 import Link from 'next/link'
 
+function getInitialMode(): 'split' | 'swipe' {
+  if (typeof window !== 'undefined' && window.innerWidth < 768) return 'swipe'
+  return 'split'
+}
+
 export default function ComparePage() {
   const { jobId, clipId } = useParams<{ jobId: string; clipId: string }>()
   const [clip, setClip] = useState<Clip | null>(null)
   const [layers, setLayers] = useState<Record<string, string>>({})
-  const [mode, setMode] = useState<'split' | 'swipe'>('split')
+  const [mode, setMode] = useState<'split' | 'swipe'>(getInitialMode)
   const [selectedLayer, setSelectedLayer] = useState('v11_final')
   const [error, setError] = useState('')
 
@@ -43,6 +48,13 @@ export default function ComparePage() {
     }
     load()
   }, [jobId, clipId])
+
+  // Dynamic page title
+  useEffect(() => {
+    if (!clip) return
+    document.title = `Before/After: ${clip.title} — ClipMine`
+    return () => { document.title = 'ClipMine' }
+  }, [clip])
 
   if (error) {
     return (
@@ -86,19 +98,24 @@ export default function ComparePage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs text-white/40">View Mode:</span>
+          <span className="text-xs text-white/40 hidden sm:inline">View Mode:</span>
           <div className="flex bg-white/10 rounded-lg p-0.5">
-            {(['split', 'swipe'] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-                  mode === m ? 'bg-amber-500 text-black' : 'text-white/60 hover:text-white'
-                }`}
-              >
-                {m === 'split' ? 'Split View' : 'Swipe View'}
-              </button>
-            ))}
+            <button
+              onClick={() => setMode('swipe')}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                mode === 'swipe' ? 'bg-amber-500 text-black' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Swipe View
+            </button>
+            <button
+              onClick={() => setMode('split')}
+              className={`hidden sm:block px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
+                mode === 'split' ? 'bg-amber-500 text-black' : 'text-white/60 hover:text-white'
+              }`}
+            >
+              Split View
+            </button>
           </div>
         </div>
       </header>

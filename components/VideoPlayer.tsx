@@ -58,37 +58,40 @@ export default function VideoPlayer({ clip, transcript, jobId }: Props) {
               <p className="text-white/40 text-sm">Video unavailable</p>
             </div>
           ) : (
-          <video
-            ref={videoRef}
-            src={videoUrl}
-            className="w-full h-full object-contain"
-            onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
-            onDurationChange={() => setDuration(videoRef.current?.duration || 0)}
-            onEnded={() => setIsPlaying(false)}
-            onClick={togglePlay}
-            onError={() => setVideoError(true)}
-          />
+            <>
+              <video
+                ref={videoRef}
+                src={videoUrl}
+                className="w-full h-full object-contain"
+                onTimeUpdate={() => setCurrentTime(videoRef.current?.currentTime || 0)}
+                onDurationChange={() => setDuration(videoRef.current?.duration || 0)}
+                onEnded={() => setIsPlaying(false)}
+                onClick={togglePlay}
+                onError={() => setVideoError(true)}
+              />
 
-          {showSubtitles && (
-            <SubtitleOverlay
-              segments={transcript}
-              currentTime={currentTime}
-              clipStart={clip.start}
-              style={subtitleStyle}
-            />
-          )}
+              {showSubtitles && (
+                <SubtitleOverlay
+                  segments={transcript}
+                  currentTime={currentTime}
+                  clipStart={clip.start}
+                  style={subtitleStyle}
+                />
+              )}
 
-          {!isPlaying && (
-            <button
-              onClick={togglePlay}
-              className="absolute inset-0 flex items-center justify-center group"
-            >
-              <div className="w-16 h-16 rounded-full bg-black/50 flex items-center justify-center group-hover:bg-black/70 transition-colors">
-                <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </button>
+              {!isPlaying && (
+                <button
+                  onClick={togglePlay}
+                  className="absolute inset-0 flex items-center justify-center group"
+                >
+                  <div className="w-16 h-16 rounded-full bg-black/50 flex items-center justify-center group-hover:bg-black/70 transition-colors">
+                    <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

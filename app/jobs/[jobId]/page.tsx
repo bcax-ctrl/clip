@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { Job, Clip } from '@/lib/types'
 import ClipSidebar from '@/components/ClipSidebar'
@@ -13,6 +13,8 @@ export default function JobPage() {
   const [job, setJob] = useState<Job | null>(null)
   const [selectedClip, setSelectedClip] = useState<Clip | null>(null)
   const [error, setError] = useState('')
+  const [showDownloadTip, setShowDownloadTip] = useState(false)
+  const tipRef = useRef<HTMLDivElement>(null)
 
   const fetchJob = useCallback(async () => {
     try {
@@ -66,6 +68,28 @@ export default function JobPage() {
 
   const isProcessing = job.status !== 'done' && job.status !== 'error'
 
+  // Set dynamic page title
+  useEffect(() => {
+    if (!job) return
+    if (job.status === 'done') {
+      document.title = `Results: ${job.fileName} — ClipMine`
+    } else {
+      document.title = 'Processing — ClipMine'
+    }
+    return () => { document.title = 'ClipMine' }
+  }, [job])
+
+  // Close tooltip on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (tipRef.current && !tipRef.current.contains(e.target as Node)) {
+        setShowDownloadTip(false)
+      }
+    }
+    if (showDownloadTip) document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [showDownloadTip])
+
   return (
     <div className="flex flex-col h-screen bg-[#0A0A0A]">
       <header className="flex items-center justify-between px-6 py-3 border-b border-white/10 bg-[#141414] flex-shrink-0">
@@ -73,9 +97,27 @@ export default function JobPage() {
           <Link href="/" className="text-xl font-black">
             Clip<span className="text-amber-400">Mine</span>
           </Link>
-          <div className="text-xs text-white/40 max-w-xs truncate">{job.fileName}</div>
+          <div className="text-xs text-white/40 max-w-xs truncate hidden sm:block">{job.fileName}</div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          {job.status === 'done' && job.clips?.length > 0 && (
+            <div className="relative" ref={tipRef}>
+              <button
+                onClick={() => setShowDownloadTip((v) => !v)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-medium rounded-lg transition-colors border border-amber-500/30"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Download All
+              </button>
+              {showDownloadTip && (
+                <div className="absolute right-0 top-full mt-2 w-64 bg-[#1E1E1E] border border-white/10 rounded-xl p-3 shadow-xl z-50 text-xs text-white/70 leading-relaxed">
+                  Right-click each clip and choose <span className="text-white font-medium">Save As</span>, or use the <span className="text-amber-400 font-medium">Download</span> button on each clip card.
+                </div>
+              )}
+            </div>
+          )}
           <span className={`inline-flex items-center gap-1.5 text-xs px-2 py-1 rounded-full font-medium ${
             job.status === 'done' ? 'bg-green-500/20 text-green-400' :
             job.status === 'error' ? 'bg-red-500/20 text-red-400' :
@@ -97,15 +139,16 @@ export default function JobPage() {
         </div>
       )}
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
         <ClipSidebar
           clips={job.clips}
           activeClipId={selectedClip?.id || null}
           jobId={jobId}
           onSelect={setSelectedClip}
+          isProcessing={isProcessing}
         />
 
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-hidden min-h-0">
           {selectedClip ? (
             <VideoPlayer
               clip={selectedClip}
@@ -147,7 +190,7 @@ export default function JobPage() {
         </main>
 
         {selectedClip && (
-          <aside className="w-72 flex-shrink-0 border-l border-white/10 bg-[#141414] overflow-y-auto p-4 space-y-4">
+          <aside className="hidden md:block w-72 flex-shrink-0 border-l border-white/10 bg-[#141414] overflow-y-auto p-4 space-y-4">
             <div>
               <h3 className="text-xs text-white/40 uppercase tracking-wider mb-2">Clip Info</h3>
               <h2 className="font-bold text-white leading-snug">{selectedClip.title}</h2>
