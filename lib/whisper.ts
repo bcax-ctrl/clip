@@ -29,11 +29,17 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
   const transcriptDir = path.join(outputDir, 'transcript')
   fs.mkdirSync(transcriptDir, { recursive: true })
 
-  const model = process.env.WHISPER_MODEL || 'base'
+  // Default to the smallest model for speed. Override with WHISPER_MODEL
+  // (tiny | base | small | medium | large) if accuracy matters more.
+  const model = process.env.WHISPER_MODEL || 'tiny'
+  const threads = process.env.WHISPER_THREADS || '0' // 0 = use all cores
+  // Setting a language skips Whisper's auto-detection pass (a few seconds).
+  const language = process.env.WHISPER_LANGUAGE // e.g. "en", "id"
+  const langFlag = language ? ` --language ${language}` : ''
 
   try {
     await execAsync(
-      `whisper "${inputPath}" --model ${model} --output_format json --output_dir "${transcriptDir}"`,
+      `whisper "${inputPath}" --model ${model} --threads ${threads} --fp16 False${langFlag} --output_format json --output_dir "${transcriptDir}"`,
       { maxBuffer: 100 * 1024 * 1024, timeout: 30 * 60 * 1000 }
     )
   } catch (err: unknown) {
