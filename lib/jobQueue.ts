@@ -1,6 +1,12 @@
 import { Job, JobStatus } from './types'
 
-const jobs = new Map<string, Job>()
+// Persist the job store on globalThis so it survives module re-instantiation
+// across separate route bundles and HMR reloads in Next.js dev mode.
+// Without this, POST /api/jobs and GET /api/jobs/[id] each get their own
+// Map instance and jobs appear to "vanish" right after creation.
+const globalForJobs = globalThis as unknown as { __clipmineJobs?: Map<string, Job> }
+const jobs: Map<string, Job> = globalForJobs.__clipmineJobs ?? new Map<string, Job>()
+if (!globalForJobs.__clipmineJobs) globalForJobs.__clipmineJobs = jobs
 
 export function createJob(partial: Omit<Job, 'status' | 'progress' | 'progressStep' | 'clips' | 'createdAt' | 'updatedAt'>): Job {
   const job: Job = {

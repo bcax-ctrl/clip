@@ -1,7 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getJob } from '@/lib/jobQueue'
-import path from 'path'
 import fs from 'fs'
+
+// Read an exact byte range from the file into a Buffer. Avoids
+// Readable.toWeb(), which is unreliable inside Next.js route bundles.
+function readRange(filePath: string, start: number, end: number): Buffer {
+  const length = end - start + 1
+  const buffer = Buffer.alloc(length)
+  const fd = fs.openSync(filePath, 'r')
+  try {
+    fs.readSync(fd, buffer, 0, length, start)
+  } finally {
+    fs.closeSync(fd)
+  }
+  return buffer
+}
 
 export async function GET(
   req: NextRequest,
@@ -30,25 +43,20 @@ export async function GET(
     const parts = range.replace(/bytes=/, '').split('-')
     const start = parseInt(parts[0], 10)
     const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1
-    const chunkSize = end - start + 1
-    const stream = fs.createReadStream(filePath, { start, end })
-    const { Readable } = await import('stream')
-    const webStream = Readable.toWeb(stream) as ReadableStream
-    return new NextResponse(webStream, {
+    const chunk = readRange(filePath, start, end)
+    return new NextResponse(new Uint8Array(chunk), {
       status: 206,
       headers: {
         'Content-Range': `bytes ${start}-${end}/${stat.size}`,
         'Accept-Ranges': 'bytes',
-        'Content-Length': chunkSize.toString(),
+        'Content-Length': chunk.length.toString(),
         'Content-Type': 'video/mp4',
       },
     })
   }
 
-  const stream = fs.createReadStream(filePath)
-  const { Readable } = await import('stream')
-  const webStream = Readable.toWeb(stream) as ReadableStream
-  return new NextResponse(webStream, {
+  const buffer = fs.readFileSync(filePath)
+  return new NextResponse(new Uint8Array(buffer), {
     headers: {
       'Content-Length': stat.size.toString(),
       'Content-Type': 'video/mp4',
