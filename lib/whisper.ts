@@ -32,9 +32,15 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
   // Default to the smallest model for speed. Override with WHISPER_MODEL
   // (tiny | base | small | medium | large) if accuracy matters more.
   const model = process.env.WHISPER_MODEL || 'tiny'
+  const language = process.env.WHISPER_LANGUAGE // e.g. "en", "id"
+
+  // faster-whisper engine (CTranslate2) — ~4x faster on CPU.
+  // Enable with WHISPER_ENGINE=faster (requires: pip install faster-whisper).
+  if (process.env.WHISPER_ENGINE === 'faster') {
+    return transcribeWithFasterWhisper(inputPath, outputDir, model, language)
+  }
   const threads = process.env.WHISPER_THREADS || '0' // 0 = use all cores
   // Setting a language skips Whisper's auto-detection pass (a few seconds).
-  const language = process.env.WHISPER_LANGUAGE // e.g. "en", "id"
   const langFlag = language ? ` --language ${language}` : ''
 
   try {
@@ -59,6 +65,48 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
 
   const raw = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
   const segments: TranscriptSegment[] = (raw.segments || []).map((s: { start: number; end: number; text: string }) => ({
+    start: s.start,
+    end: s.end,
+    text: s.text.trim(),
+  }))
+
+  fs.writeFileSync(path.join(outputDir, 'transcript.json'), JSON.stringify(segments, null, 2))
+  return segments
+}
+
+// Run transcription via the faster-whisper Python helper, which prints the
+// segments as JSON to stdout in our format.
+async function transcribeWithFasterWhisper(
+  inputPath: string,
+  outputDir: string,
+  model: string,
+  language?: string
+): Promise<TranscriptSegment[]> {
+  const script = path.join(process.cwd(), 'scripts', 'faster_whisper_transcribe.py')
+  const py = process.env.PYTHON_BIN || 'python'
+  const cmd = `${py} "${script}" "${inputPath}" "${model}" "${language || ''}"`
+
+  let stdout: string
+  try {
+    const res = await execAsync(cmd, { maxBuffer: 100 * 1024 * 1024, timeout: 30 * 60 * 1000 })
+    stdout = res.stdout
+  } catch (err: unknown) {
+    const error = err as Error & { stderr?: string }
+    const detail = error.stderr || error.message
+    if (detail?.includes('faster-whisper not installed')) {
+      throw new Error('faster-whisper not installed. Run: pip install faster-whisper')
+    }
+    throw new Error(`faster-whisper failed: ${detail}`)
+  }
+
+  let parsed: { start: number; end: number; text: string }[]
+  try {
+    parsed = JSON.parse(stdout.trim())
+  } catch {
+    throw new Error('faster-whisper produced invalid output')
+  }
+
+  const segments: TranscriptSegment[] = parsed.map(s => ({
     start: s.start,
     end: s.end,
     text: s.text.trim(),
