@@ -77,7 +77,10 @@ async function runYoutubePipeline(jobId: string, url: string, inputPath: string,
   updateJob(jobId, { fileSize: stat.size, fileName: url })
 
   setJobStatus(jobId, 'transcribing', 15, 'Transcribing audio...')
-  const transcript = await transcribeVideo(inputPath, jobDir)
+  const transcript = await transcribeVideo(inputPath, jobDir, (pct) => {
+    const mapped = 15 + Math.round((pct / 100) * 20)
+    setJobStatus(jobId, 'transcribing', mapped, `Transcribing audio... ${pct}%`)
+  })
   updateJob(jobId, { transcript })
 
   setJobStatus(jobId, 'analyzing', 40, 'Detecting viral moments...')

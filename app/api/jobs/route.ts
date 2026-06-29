@@ -54,7 +54,11 @@ async function runPipeline(jobId: string, inputPath: string, jobDir: string) {
 
   let transcript
   try {
-    transcript = await transcribeVideo(inputPath, jobDir)
+    // Map transcription 0-100% into the 10-35% slice of the overall job bar.
+    transcript = await transcribeVideo(inputPath, jobDir, (pct) => {
+      const mapped = 10 + Math.round((pct / 100) * 25)
+      setJobStatus(jobId, 'transcribing', mapped, `Transcribing audio... ${pct}%`)
+    })
   } catch (err: unknown) {
     const error = err as Error
     throw new Error(error.message)

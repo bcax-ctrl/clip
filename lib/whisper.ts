@@ -1,10 +1,13 @@
-import { exec } from 'child_process'
+import { exec, spawn } from 'child_process'
 import { promisify } from 'util'
 import path from 'path'
 import fs from 'fs'
 import { TranscriptSegment } from './types'
 
 const execAsync = promisify(exec)
+
+// Optional callback invoked with a 0-100 percentage during transcription.
+export type ProgressCallback = (percent: number) => void
 
 const DEMO_SEGMENTS: TranscriptSegment[] = [
   { start: 0, end: 9.5, text: "This is where everything changed for me..." },
@@ -19,7 +22,11 @@ const DEMO_SEGMENTS: TranscriptSegment[] = [
   { start: 90, end: 99.5, text: "If you take nothing else from this video, remember this one thing." },
 ]
 
-export async function transcribeVideo(inputPath: string, outputDir: string): Promise<TranscriptSegment[]> {
+export async function transcribeVideo(
+  inputPath: string,
+  outputDir: string,
+  onProgress?: ProgressCallback
+): Promise<TranscriptSegment[]> {
   if (process.env.DEMO_MODE === 'true') {
     fs.mkdirSync(outputDir, { recursive: true })
     fs.writeFileSync(path.join(outputDir, 'transcript.json'), JSON.stringify(DEMO_SEGMENTS, null, 2))
@@ -45,7 +52,7 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
   // faster-whisper engine (CTranslate2) — ~4x faster on CPU.
   // Enable with WHISPER_ENGINE=faster (requires: pip install faster-whisper).
   if (engine === 'faster') {
-    return transcribeWithFasterWhisper(inputPath, outputDir, model, language).then(done)
+    return transcribeWithFasterWhisper(inputPath, outputDir, model, language, onProgress).then(done)
   }
   const threads = process.env.WHISPER_THREADS || '0' // 0 = use all cores
   // Setting a language skips Whisper's auto-detection pass (a few seconds).
@@ -88,24 +95,36 @@ async function transcribeWithFasterWhisper(
   inputPath: string,
   outputDir: string,
   model: string,
-  language?: string
+  language?: string,
+  onProgress?: ProgressCallback
 ): Promise<TranscriptSegment[]> {
   const script = path.join(process.cwd(), 'scripts', 'faster_whisper_transcribe.py')
   const py = process.env.PYTHON_BIN || 'python'
-  const cmd = `${py} "${script}" "${inputPath}" "${model}" "${language || ''}"`
 
-  let stdout: string
-  try {
-    const res = await execAsync(cmd, { maxBuffer: 100 * 1024 * 1024, timeout: 30 * 60 * 1000 })
-    stdout = res.stdout
-  } catch (err: unknown) {
-    const error = err as Error & { stderr?: string }
-    const detail = error.stderr || error.message
-    if (detail?.includes('faster-whisper not installed')) {
-      throw new Error('faster-whisper not installed. Run: pip install faster-whisper')
-    }
-    throw new Error(`faster-whisper failed: ${detail}`)
-  }
+  // Use spawn (not exec) so we can stream "PROGRESS <pct>" lines from stderr
+  // and report live transcription progress while JSON accumulates on stdout.
+  const stdout = await new Promise<string>((resolve, reject) => {
+    const child = spawn(py, [script, inputPath, model, language || ''])
+    let out = ''
+    let errBuf = ''
+    child.stdout.on('data', (d: Buffer) => { out += d.toString() })
+    child.stderr.on('data', (d: Buffer) => {
+      const text = d.toString()
+      errBuf += text
+      for (const line of text.split('\n')) {
+        const m = line.match(/PROGRESS (\d+)/)
+        if (m && onProgress) onProgress(parseInt(m[1], 10))
+      }
+    })
+    child.on('error', (e) => reject(e))
+    child.on('close', (code) => {
+      if (code === 0) return resolve(out)
+      if (errBuf.includes('faster-whisper not installed')) {
+        return reject(new Error('faster-whisper not installed. Run: pip install faster-whisper'))
+      }
+      reject(new Error(`faster-whisper failed: ${errBuf.trim() || `exit code ${code}`}`))
+    })
+  })
 
   let parsed: { start: number; end: number; text: string }[]
   try {

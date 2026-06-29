@@ -38,17 +38,26 @@ def main() -> int:
     # int8 on CPU is the fastest config; threads default to all cores.
     model = WhisperModel(model_size, device="cpu", compute_type="int8")
 
-    segments, _info = model.transcribe(
+    segments, info = model.transcribe(
         input_path,
         language=language,
         vad_filter=True,  # skip silence -> faster, cleaner segments
         beam_size=1,      # greedy decoding -> faster
     )
 
-    out = [
-        {"start": float(s.start), "end": float(s.end), "text": s.text.strip()}
-        for s in segments
-    ]
+    # Total audio duration lets us emit real progress as we consume the
+    # (lazy) segment generator. Progress goes to stderr; JSON to stdout.
+    total = float(getattr(info, "duration", 0) or 0)
+    out = []
+    last_pct = -1
+    for s in segments:
+        out.append({"start": float(s.start), "end": float(s.end), "text": s.text.strip()})
+        if total > 0:
+            pct = min(99, int(s.end / total * 100))
+            if pct > last_pct:
+                print(f"PROGRESS {pct}", file=sys.stderr, flush=True)
+                last_pct = pct
+
     print(json.dumps(out))
     return 0
 
