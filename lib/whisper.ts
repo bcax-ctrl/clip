@@ -33,11 +33,19 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
   // (tiny | base | small | medium | large) if accuracy matters more.
   const model = process.env.WHISPER_MODEL || 'tiny'
   const language = process.env.WHISPER_LANGUAGE // e.g. "en", "id"
+  const engine = process.env.WHISPER_ENGINE || 'openai-whisper'
+
+  const t0 = Date.now()
+  console.log(`[whisper] engine=${engine} model=${model} language=${language || 'auto'} — starting transcription...`)
+  const done = (segs: TranscriptSegment[]) => {
+    console.log(`[whisper] done in ${((Date.now() - t0) / 1000).toFixed(1)}s — ${segs.length} segments`)
+    return segs
+  }
 
   // faster-whisper engine (CTranslate2) — ~4x faster on CPU.
   // Enable with WHISPER_ENGINE=faster (requires: pip install faster-whisper).
-  if (process.env.WHISPER_ENGINE === 'faster') {
-    return transcribeWithFasterWhisper(inputPath, outputDir, model, language)
+  if (engine === 'faster') {
+    return transcribeWithFasterWhisper(inputPath, outputDir, model, language).then(done)
   }
   const threads = process.env.WHISPER_THREADS || '0' // 0 = use all cores
   // Setting a language skips Whisper's auto-detection pass (a few seconds).
@@ -71,7 +79,7 @@ export async function transcribeVideo(inputPath: string, outputDir: string): Pro
   }))
 
   fs.writeFileSync(path.join(outputDir, 'transcript.json'), JSON.stringify(segments, null, 2))
-  return segments
+  return done(segments)
 }
 
 // Run transcription via the faster-whisper Python helper, which prints the
