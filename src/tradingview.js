@@ -10,8 +10,49 @@
  * notice.
  */
 
+import fs from "node:fs";
+// Use undici's own fetch + ProxyAgent from the same package so the dispatcher
+// interface matches (mixing the bundled fetch with a standalone ProxyAgent
+// throws UND_ERR_INVALID_ARG). Without a proxy this behaves like global fetch.
+import { fetch, ProxyAgent } from "undici";
+
 const SYMBOL_SEARCH_URL = "https://symbol-search.tradingview.com/symbol_search/";
 const SCANNER_URL = "https://scanner.tradingview.com";
+
+/**
+ * When an HTTPS proxy is configured (e.g. a corporate / sandbox egress proxy),
+ * Node's built-in fetch does NOT use it automatically. Build an undici
+ * ProxyAgent so requests are tunnelled correctly. If the proxy re-terminates
+ * TLS, NODE_EXTRA_CA_CERTS must point at its CA bundle so verification passes.
+ */
+function buildDispatcher() {
+  const proxyUri = process.env.HTTPS_PROXY || process.env.https_proxy;
+  if (!proxyUri) return undefined;
+  const caPath = process.env.NODE_EXTRA_CA_CERTS;
+  let ca;
+  try {
+    if (caPath && fs.existsSync(caPath)) ca = fs.readFileSync(caPath);
+  } catch {
+    // fall back to system trust store
+  }
+  return new ProxyAgent({ uri: proxyUri, requestTls: ca ? { ca } : undefined });
+}
+
+const dispatcher = buildDispatcher();
+
+/**
+ * fetch wrapper that (a) injects the proxy dispatcher and (b) surfaces the
+ * underlying network cause. Node's fetch throws a bare "fetch failed" and hides
+ * the real reason (DNS, TLS, or an egress proxy rejecting the host) in `.cause`.
+ */
+async function httpFetch(url, options = {}) {
+  try {
+    return await fetch(url, { ...options, dispatcher });
+  } catch (err) {
+    const cause = err?.cause?.message || err?.cause?.code;
+    throw new Error(`Network request to ${new URL(url).host} failed: ${cause || err.message}`);
+  }
+}
 
 const DEFAULT_HEADERS = {
   "User-Agent":
@@ -80,7 +121,7 @@ function ratingLabel(value) {
 }
 
 async function postJson(url, body) {
-  const res = await fetch(url, {
+  const res = await httpFetch(url, {
     method: "POST",
     headers: { ...DEFAULT_HEADERS, "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -107,7 +148,7 @@ export async function searchSymbol(text, opts = {}) {
   if (opts.type) params.set("type", opts.type); // stock | crypto | forex | futures | index | economic ...
   if (opts.exchange) params.set("exchange", opts.exchange);
 
-  const res = await fetch(`${SYMBOL_SEARCH_URL}?${params.toString()}`, {
+  const res = await httpFetch(`${SYMBOL_SEARCH_URL}?${params.toString()}`, {
     headers: DEFAULT_HEADERS,
   });
   if (!res.ok) {
