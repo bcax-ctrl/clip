@@ -4,11 +4,13 @@
   "description": "Model Context Protocol server exposing TradingView market data, symbol search, screener and technical analysis tools.",
   "type": "module",
   "bin": {
-    "tradingview-mcp": "src/index.js"
+    "tradingview-mcp": "src/index.js",
+    "tradingview-cdp-mcp": "src/cdp-server.js"
   },
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
+    "start:cdp": "node src/cdp-server.js",
     "test": "node --test"
   },
   "keywords": [
@@ -26,6 +28,7 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
+    "playwright": "^1.61.1",
     "undici": "^8.6.0",
     "zod": "^3.23.8"
   }

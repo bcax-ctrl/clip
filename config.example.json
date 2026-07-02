@@ -3,6 +3,13 @@
     "tradingview": {
       "command": "node",
       "args": ["/absolute/path/to/clip/src/index.js"]
+    },
+    "tradingview-cdp": {
+      "command": "node",
+      "args": ["/absolute/path/to/clip/src/cdp-server.js"],
+      "env": {
+        "CDP_URL": "http://127.0.0.1:9222"
+      }
     }
   }
 }
