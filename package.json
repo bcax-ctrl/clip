@@ -11,6 +11,7 @@
   "scripts": {
     "start": "node src/index.js",
     "start:cdp": "node src/cdp-server.js",
+    "doctor": "node scripts/check.mjs",
     "test": "node --test"
   },
   "keywords": [

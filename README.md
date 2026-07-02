@@ -112,6 +112,27 @@ An example config is provided in [`config.example.json`](./config.example.json).
 - "Give me the 1h technical analysis for NASDAQ:TSLA."
 - "Screen US stocks with a market cap over 100B, sorted by volume."
 
+## Verify your setup (`npm run doctor`)
+
+Run this on the machine where you'll use the servers to confirm each path is
+reachable:
+
+```bash
+npm run doctor          # check both
+node scripts/check.mjs scanner   # only the scanner HTTP path
+node scripts/check.mjs cdp       # only the CDP endpoint (TradingView Desktop)
+```
+
+Example output when everything is up:
+
+```
+PASS  scanner: TradingView HTTP endpoints — got NASDAQ:AAPL
+PASS  cdp: http://127.0.0.1:9222 — Chrome/141.0.7390.37, 2 page(s)
+```
+
+It exits non-zero if any requested check fails, so it's usable in CI or a
+pre-flight step.
+
 ## Notes & limitations
 
 - Data is best-effort from public endpoints; there is no SLA and requests may be
