@@ -1,0 +1,56 @@
+{
+  "sambutan": {
+    "namaPejabat": "Nama Kepala Bidang PHU (isi sesuai pejabat aktif)",
+    "jabatan": "Kepala Bidang Penyelenggaraan Haji dan Umrah",
+    "foto": "/profil/kabid-placeholder.svg",
+    "isi": [
+      "Assalamu'alaikum warahmatullahi wabarakatuh.",
+      "Selamat datang di situs resmi Bidang Penyelenggaraan Haji dan Umrah (PHU) Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan. Situs ini kami hadirkan sebagai sarana informasi dan pelayanan bagi calon jemaah haji, jemaah umrah, keluarga, serta mitra Penyelenggara Perjalanan Ibadah Umrah (PPIU) dan Penyelenggara Ibadah Haji Khusus (PIHK) di seluruh Kalimantan Selatan.",
+      "Kami berkomitmen memberikan pelayanan yang transparan, mudah diakses, dan akuntabel dalam setiap tahapan penyelenggaraan ibadah haji dan umrah, mulai dari pendaftaran hingga kepulangan jemaah ke tanah air.",
+      "Semoga informasi pada situs ini bermanfaat dan memudahkan masyarakat Kalimantan Selatan dalam menunaikan ibadah haji dan umrah dengan aman, nyaman, dan mabrur.",
+      "Wassalamu'alaikum warahmatullahi wabarakatuh."
+    ]
+  },
+  "visi": "Terwujudnya penyelenggaraan ibadah haji dan umrah yang transparan, efektif, efisien, akuntabel, dan berkeadilan bagi masyarakat Kalimantan Selatan.",
+  "misi": [
+    "Meningkatkan kualitas pelayanan pendaftaran dan dokumen jemaah haji dan umrah.",
+    "Meningkatkan pembinaan manasik dan bimbingan ibadah haji bagi jemaah.",
+    "Meningkatkan pengawasan dan pembinaan terhadap PPIU dan PIHK di Kalimantan Selatan.",
+    "Meningkatkan transparansi informasi kuota, daftar tunggu, dan keuangan haji.",
+    "Membangun sistem informasi haji dan umrah yang mudah diakses masyarakat."
+  ],
+  "tugas": "Bidang Penyelenggaraan Haji dan Umrah mempunyai tugas melaksanakan pelayanan, bimbingan, serta pembinaan di bidang pendaftaran dan dokumen haji, pembinaan haji dan umrah, akomodasi transportasi dan perlengkapan haji, serta pengelolaan keuangan haji sesuai peraturan perundang-undangan.",
+  "fungsi": [
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pendaftaran dan dokumen haji.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pembinaan haji dan umrah.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang akomodasi, transportasi, dan perlengkapan haji.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pengelolaan keuangan haji.",
+    "Pelaksanaan urusan tata usaha Bidang Penyelenggaraan Haji dan Umrah."
+  ],
+  "strukturOrganisasi": {
+    "kepala": "Kepala Bidang Penyelenggaraan Haji dan Umrah",
+    "seksi": [
+      {
+        "nama": "Seksi Pendaftaran dan Dokumen Haji",
+        "tugasSingkat": "Layanan pendaftaran, pembatalan, dan pelimpahan porsi haji."
+      },
+      {
+        "nama": "Seksi Pembinaan Haji dan Umrah",
+        "tugasSingkat": "Bimbingan manasik, pembinaan jemaah, dan pengawasan PPIU/PIHK."
+      },
+      {
+        "nama": "Seksi Akomodasi, Transportasi, dan Perlengkapan Haji",
+        "tugasSingkat": "Pengaturan asrama haji, transportasi, dan perlengkapan jemaah."
+      },
+      {
+        "nama": "Seksi Pengelolaan Keuangan Haji",
+        "tugasSingkat": "Pengelolaan setoran, pelunasan, dan keuangan BPIH."
+      }
+    ]
+  },
+  "sejarah": [
+    "Bidang Penyelenggaraan Haji dan Umrah (PHU) merupakan salah satu bidang di lingkungan Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan yang menangani seluruh aspek penyelenggaraan ibadah haji dan umrah di wilayah Kalimantan Selatan.",
+    "Sejak dibentuk, Bidang PHU terus bertransformasi mengikuti perkembangan kebijakan nasional penyelenggaraan haji, termasuk digitalisasi layanan pendaftaran melalui Sistem Informasi dan Komputerisasi Haji Terpadu (Siskohat).",
+    "Kalimantan Selatan memberangkatkan jemaah haji setiap tahun melalui Embarkasi Banjarmasin, dengan cakupan pelayanan meliputi 13 kabupaten/kota se-Kalimantan Selatan."
+  ]
+}

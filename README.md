@@ -1,1 +1,144 @@
-# clip
+# Situs Bidang PHU — Kanwil Kemenag Kalimantan Selatan
+
+Situs resmi Bidang Penyelenggaraan Haji dan Umrah (PHU), Kantor Wilayah
+Kementerian Agama Provinsi Kalimantan Selatan. Dibangun dengan fokus pada
+pengguna mayoritas mobile dan lansia: teks besar, kontras tinggi, navigasi
+sederhana, dan halaman ringan.
+
+## Stack
+
+- **Next.js (App Router)** + TypeScript
+- **Tailwind CSS v4** + komponen bergaya shadcn/ui (Radix UI primitives,
+  ditulis manual di `src/components/ui`)
+- **MDX** untuk konten Berita & Pengumuman (folder `content/berita`), tanpa
+  database
+- Data lain (statistik, layanan, direktori travel, dll.) sebagai file
+  **JSON** di `src/data`, diakses lewat lapisan tipe di `src/lib`
+- Target deploy: **Vercel**
+
+## Menjalankan di Lokal
+
+Prasyarat: Node.js 20+ dan npm.
+
+```bash
+npm install
+npm run dev
+```
+
+Buka [http://localhost:3000](http://localhost:3000).
+
+Perintah lain:
+
+```bash
+npm run build   # build produksi
+npm run start   # jalankan hasil build (port 3000, atau: npm run start -- -p 4000)
+npm run lint    # ESLint
+```
+
+## Deploy ke Vercel
+
+1. Push repo ini ke GitHub/GitLab/Bitbucket.
+2. Import project di [vercel.com/new](https://vercel.com/new), pilih repo ini.
+3. Framework preset otomatis terdeteksi sebagai Next.js — tidak perlu
+   konfigurasi tambahan (tidak ada environment variable wajib untuk build
+   dasar).
+4. Klik **Deploy**.
+
+Setiap push ke branch utama akan otomatis membuat deployment baru.
+
+## Menambah Berita / Pengumuman
+
+Konten berita & pengumuman adalah file **MDX** di folder `content/berita/`.
+Tidak perlu database atau CMS — cukup tambah file baru.
+
+1. Buat file baru, misalnya `content/berita/judul-berita-anda.mdx`.
+2. Isi dengan format berikut (frontmatter di antara `---`):
+
+   ```mdx
+   ---
+   title: "Judul Berita"
+   date: "2026-02-01"
+   category: "Berita"
+   excerpt: "Ringkasan singkat 1-2 kalimat yang tampil di daftar berita."
+   image: "/galeri/kegiatan-01.svg"
+   ---
+
+   Isi berita di sini, mendukung format Markdown biasa: **tebal**,
+   *miring*, `## Sub judul`, daftar, dan tautan.
+   ```
+
+3. `category` bebas diisi apa saja (mis. "Berita", "Pengumuman", "Kegiatan")
+   — halaman Berita & Pengumuman otomatis membuat filter kategori dari nilai
+   yang dipakai.
+4. `image` opsional. Simpan gambar di folder `public/` (mis. `public/berita/`)
+   lalu rujuk dengan path yang diawali `/`.
+5. Nama file (tanpa `.mdx`) menjadi slug URL: `/berita/judul-berita-anda`.
+6. Simpan file — di mode `npm run dev` halaman akan otomatis memuat berita
+   baru tanpa perlu restart server.
+
+Tidak ada langkah build tambahan; berita baru otomatis muncul di halaman
+Beranda (3 terbaru) dan halaman Berita & Pengumuman.
+
+## Mengganti Data (Mock → Data Resmi)
+
+Semua data non-konten (statistik, layanan, direktori travel, dll.) berada di
+`src/data/*.json`. Edit file JSON tersebut langsung — tidak perlu mengubah
+kode komponen. Tipe data ada di `src/lib/types.ts` dan diakses melalui
+`src/lib/data.ts`.
+
+| File | Digunakan di | Keterangan |
+|---|---|---|
+| `src/data/site.json` | Header, footer, kontak, pengumuman berjalan | Alamat, telepon, email, sosial media, jam layanan |
+| `src/data/statistik.json` | Beranda, Informasi Haji | Kuota, jemaah berangkat, total daftar tunggu |
+| `src/data/daftar-tunggu.json` | Informasi Haji | Kuota & daftar tunggu per kabupaten/kota |
+| `src/data/kabupaten.json` | Semua halaman yang mereferensi kab/kota | Daftar 13 kabupaten/kota se-Kalsel |
+| `src/data/manasik.json` | Informasi Haji | Jadwal manasik per gelombang |
+| `src/data/embarkasi.json` | Informasi Haji | Info Embarkasi Banjarmasin |
+| `src/data/travel.json` | Direktori Travel | **Data contoh** — ganti dengan data PPIU/PIHK resmi & terverifikasi sebelum publish |
+| `src/data/regulasi.json` + `public/regulasi/*.pdf` | Regulasi & Unduhan | Ganti file PDF placeholder dengan dokumen resmi, sesuaikan entri JSON |
+| `src/data/faq.json` | FAQ | Kelompok pertanyaan per topik |
+| `src/data/galeri.json` + `public/galeri/*` | Galeri | Ganti gambar SVG placeholder dengan foto kegiatan asli (format JPG/PNG/WebP juga didukung) |
+| `src/data/layanan.json` | Layanan | Syarat, alur, biaya, estimasi waktu per layanan |
+| `src/data/profil.json` | Profil | Sambutan Kabid, visi misi, struktur organisasi, sejarah |
+| `src/data/estimasi-keberangkatan.json` | Fitur Cek Estimasi Keberangkatan | Lihat bagian khusus di bawah |
+
+> ⚠️ **Penting sebelum go-live**: data pada `travel.json`, `regulasi.json`,
+> `profil.json` (nama pejabat), dan `estimasi-keberangkatan.json` saat ini
+> berisi **data contoh/placeholder** yang ditandai jelas (misalnya diberi
+> label "(Contoh)"). Wajib diganti dengan data resmi dan terverifikasi
+> sebelum situs digunakan untuk publik, khususnya data legalitas travel
+> yang menyangkut keamanan masyarakat.
+
+### Fitur Cek Estimasi Keberangkatan
+
+Fitur ini punya lapisan data terpisah agar mudah diganti ke sumber data
+nyata (mis. integrasi API Siskohat) tanpa mengubah komponen UI:
+
+- **Data mock**: `src/data/estimasi-keberangkatan.json`
+- **Lapisan akses data**: `src/lib/estimasi.ts` — fungsi
+  `cariEstimasiPorsiSync(nomorPorsi)` dan `validasiNomorPorsi(nomorPorsi)`
+
+Untuk integrasi ke API resmi di masa depan, ubah isi fungsi
+`cariEstimasiPorsiSync`/`cariEstimasiPorsi` di `src/lib/estimasi.ts` agar
+memanggil API tersebut, tanpa perlu mengubah komponen
+`src/components/informasi-haji/estimasi-checker.tsx`.
+
+## Struktur Folder Ringkas
+
+```
+content/berita/        MDX berita & pengumuman
+public/                Aset statis (gambar galeri, PDF regulasi, dll.)
+src/app/                Routing App Router (satu folder = satu halaman)
+src/components/         Komponen UI, termasuk src/components/ui (shadcn-style)
+src/data/                Sumber data JSON yang mudah diedit
+src/lib/                 Tipe data & fungsi akses data/konten
+```
+
+## Aksesibilitas & Performa
+
+- Ukuran teks dasar 18px, kontras warna tinggi, target sentuh besar
+  (tombol minimal 44px), fokus keyboard terlihat jelas.
+- Tanpa dependensi font eksternal (memakai font sistem) agar halaman ringan
+  dan tetap tampil cepat di koneksi lambat.
+- Navigasi mobile disederhanakan lewat menu hamburger (drawer) dengan
+  target tap besar.

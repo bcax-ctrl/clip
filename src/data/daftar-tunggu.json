@@ -1,0 +1,15 @@
+[
+  { "kabupatenId": "banjarmasin", "kuotaTahunan": 612, "jumlahDaftarTunggu": 15230, "estimasiTungguTahun": 25 },
+  { "kabupatenId": "banjarbaru", "kuotaTahunan": 298, "jumlahDaftarTunggu": 7120, "estimasiTungguTahun": 24 },
+  { "kabupatenId": "banjar", "kuotaTahunan": 421, "jumlahDaftarTunggu": 10870, "estimasiTungguTahun": 26 },
+  { "kabupatenId": "barito-kuala", "kuotaTahunan": 245, "jumlahDaftarTunggu": 6210, "estimasiTungguTahun": 25 },
+  { "kabupatenId": "tanah-laut", "kuotaTahunan": 268, "jumlahDaftarTunggu": 6540, "estimasiTungguTahun": 24 },
+  { "kabupatenId": "tapin", "kuotaTahunan": 190, "jumlahDaftarTunggu": 4380, "estimasiTungguTahun": 23 },
+  { "kabupatenId": "hulu-sungai-selatan", "kuotaTahunan": 233, "jumlahDaftarTunggu": 5710, "estimasiTungguTahun": 24 },
+  { "kabupatenId": "hulu-sungai-tengah", "kuotaTahunan": 255, "jumlahDaftarTunggu": 6330, "estimasiTungguTahun": 25 },
+  { "kabupatenId": "hulu-sungai-utara", "kuotaTahunan": 249, "jumlahDaftarTunggu": 6050, "estimasiTungguTahun": 24 },
+  { "kabupatenId": "tabalong", "kuotaTahunan": 214, "jumlahDaftarTunggu": 5230, "estimasiTungguTahun": 24 },
+  { "kabupatenId": "kotabaru", "kuotaTahunan": 231, "jumlahDaftarTunggu": 5860, "estimasiTungguTahun": 25 },
+  { "kabupatenId": "tanah-bumbu", "kuotaTahunan": 236, "jumlahDaftarTunggu": 6040, "estimasiTungguTahun": 25 },
+  { "kabupatenId": "balangan", "kuotaTahunan": 218, "jumlahDaftarTunggu": 6270, "estimasiTungguTahun": 27 }
+]
