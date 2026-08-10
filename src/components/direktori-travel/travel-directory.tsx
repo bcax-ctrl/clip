@@ -58,7 +58,7 @@ export function TravelDirectory({
             <strong>aktif</strong> pada daftar di bawah ini. Jangan melakukan
             pembayaran ke travel tanpa izin resmi atau dengan harga yang
             tidak wajar. Data pada halaman ini bersifat contoh — verifikasi
-            ulang melalui aplikasi SIPATUH Kementerian Agama atau hubungi
+            ulang melalui kanal resmi Kementerian Haji dan Umrah atau hubungi
             kami sebelum membayar.
           </p>
         </div>

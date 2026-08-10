@@ -38,19 +38,19 @@ export function SiteHeader() {
       </div>
 
       <div className="mx-auto flex w-full max-w-[1440px] items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3" aria-label="Beranda PHU Kalsel">
+        <Link href="/" className="flex items-center gap-3" aria-label="Beranda Kanwil Kemenhaj Kalsel">
           <span
             className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-extrabold text-primary-foreground"
             aria-hidden="true"
           >
-            PHU
+            KH
           </span>
           <span className="leading-tight">
             <span className="block text-base font-extrabold text-primary sm:text-lg">
-              Bidang PHU
+              Kanwil Kemenhaj
             </span>
             <span className="block text-xs text-muted-foreground sm:text-sm">
-              Kanwil Kemenag Kalimantan Selatan
+              Provinsi Kalimantan Selatan
             </span>
           </span>
         </Link>

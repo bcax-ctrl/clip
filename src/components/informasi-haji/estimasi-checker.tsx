@@ -129,8 +129,8 @@ export function EstimasiChecker() {
               <AlertCircle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
               <p className="text-base font-medium">
                 Nomor porsi tidak ditemukan pada data kami. Pastikan nomor
-                yang dimasukkan sudah benar, atau hubungi Kantor Kemenag
-                Kabupaten/Kota tempat Anda mendaftar.
+                yang dimasukkan sudah benar, atau hubungi Kantor Kementerian
+                Haji dan Umrah Kabupaten/Kota tempat Anda mendaftar.
               </p>
             </div>
           )

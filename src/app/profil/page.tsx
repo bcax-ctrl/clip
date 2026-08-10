@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { CheckCircle2, Target, Eye } from "lucide-react";
+import { CheckCircle2, Target, Eye, Info } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { OrgChart } from "@/components/org-chart";
@@ -10,20 +10,27 @@ import { profil } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Profil",
   description:
-    "Sambutan Kepala Bidang, visi misi, tugas fungsi, struktur organisasi, dan sejarah singkat Bidang PHU Kanwil Kemenag Kalimantan Selatan.",
+    "Sambutan Kepala Kanwil, visi misi, tugas fungsi, struktur organisasi, dan sejarah singkat Kanwil Kementerian Haji dan Umrah Provinsi Kalimantan Selatan.",
 };
 
 export default function ProfilPage() {
   return (
     <div>
       <PageHeader
-        title="Profil Bidang PHU"
-        description="Mengenal lebih dekat Bidang Penyelenggaraan Haji dan Umrah Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan."
+        title="Profil Kanwil Kemenhaj Kalsel"
+        description="Mengenal lebih dekat Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan."
       />
+
+      <section className="container-page pt-10">
+        <div className="flex items-start gap-3 rounded-xl border border-accent/30 bg-accent/10 p-5 text-foreground">
+          <Info className="mt-0.5 size-6 shrink-0 text-accent" aria-hidden="true" />
+          <p className="text-base">{profil.keteranganTransisi}</p>
+        </div>
+      </section>
 
       <section className="container-page py-12">
         <h2 className="text-2xl font-extrabold sm:text-3xl">
-          Sambutan Kepala Bidang
+          Sambutan Kepala Kanwil
         </h2>
         <div className="mt-6 grid gap-8 md:grid-cols-[220px_1fr]">
           <div className="mx-auto w-40 md:w-full">

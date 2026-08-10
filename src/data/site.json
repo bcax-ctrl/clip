@@ -1,11 +1,12 @@
 {
-  "namaInstansi": "Bidang Penyelenggaraan Haji dan Umrah (PHU)",
-  "namaKanwil": "Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan",
-  "singkatan": "PHU Kanwil Kemenag Kalsel",
+  "namaInstansi": "Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan",
+  "namaKanwil": "Kementerian Haji dan Umrah Republik Indonesia",
+  "singkatan": "Kanwil Kemenhaj Kalsel",
+  "keteranganKelembagaan": "Sejak 2026, penyelenggaraan haji dan umrah dialihkan dari Kementerian Agama ke Kementerian Haji dan Umrah (UU No. 8/2019 sebagaimana diubah dengan UU No. 14/2025). Kantor ini adalah kelanjutan dari Bidang PHU Kanwil Kemenag Provinsi Kalimantan Selatan.",
   "alamat": "Jl. Jenderal Sudirman No. 1, Banjarmasin, Kalimantan Selatan 70114",
   "telepon": "0511-3352222",
   "whatsapp": "0811-5000-000",
-  "email": "phu.kalsel@kemenag.go.id",
+  "email": "kalsel@haji.go.id",
   "jamLayanan": [
     { "hari": "Senin - Kamis", "jam": "08.00 - 15.00 WITA" },
     { "hari": "Jumat", "jam": "08.00 - 11.00 WITA" },
@@ -13,13 +14,14 @@
   ],
   "koordinatPeta": { "lat": -3.3194, "lng": 114.5906 },
   "sosialMedia": {
-    "instagram": "https://instagram.com/kemenagkalsel",
-    "facebook": "https://facebook.com/kemenagkalsel",
-    "youtube": "https://youtube.com/@kemenagkalsel",
-    "website": "https://kalsel.kemenag.go.id"
+    "instagram": "https://instagram.com/kemenhajkalsel",
+    "facebook": "https://facebook.com/kemenhajkalsel",
+    "youtube": "https://youtube.com/@kemenhajkalsel",
+    "website": "https://kalsel.haji.go.id"
   },
   "lapor": "https://www.lapor.go.id",
   "pengumumanBerjalan": [
+    "Mulai 2026, layanan haji dan umrah dikelola Kementerian Haji dan Umrah (Kemenhaj) — tidak lagi di bawah Kementerian Agama.",
     "Pelunasan BPIH tahap 1 dibuka mulai tanggal yang akan diumumkan lebih lanjut.",
     "Waspada penipuan travel umrah tidak berizin — selalu cek Direktori Travel resmi di situs ini.",
     "Jadwal manasik haji 2026 telah tersedia di halaman Informasi Haji."

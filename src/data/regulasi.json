@@ -1,27 +1,41 @@
 [
   {
     "kategori": "Undang-Undang",
-    "judul": "UU No. 8 Tahun 2019 tentang Penyelenggaraan Ibadah Haji dan Umrah",
+    "judul": "UU No. 8 Tahun 2019 tentang Penyelenggaraan Ibadah Haji dan Umrah (sebagaimana diubah dengan UU No. 14 Tahun 2025)",
     "nomor": "UU 8/2019",
     "tahun": 2019,
     "file": "/regulasi/uu-8-2019-phu.pdf"
   },
   {
-    "kategori": "Peraturan Menteri Agama",
+    "kategori": "Undang-Undang",
+    "judul": "UU No. 14 Tahun 2025 tentang Perubahan Ketiga atas UU No. 8 Tahun 2019 (Pembentukan Kementerian Haji dan Umrah)",
+    "nomor": "UU 14/2025",
+    "tahun": 2025,
+    "file": "/regulasi/uu-14-2025-kemenhaj.pdf"
+  },
+  {
+    "kategori": "Peraturan Menteri Haji dan Umrah",
+    "judul": "Peraturan Menteri Haji dan Umrah tentang Organisasi dan Tata Kerja Kementerian Haji dan Umrah",
+    "nomor": "PMH 2/2025",
+    "tahun": 2025,
+    "file": "/regulasi/pmh-2-2025-organisasi-tata-kerja.pdf"
+  },
+  {
+    "kategori": "Peraturan Menteri Agama (masa transisi)",
     "judul": "PMA tentang Penyelenggaraan Ibadah Haji Reguler",
     "nomor": "PMA 8/2023",
     "tahun": 2023,
     "file": "/regulasi/pma-8-2023-haji-reguler.pdf"
   },
   {
-    "kategori": "Peraturan Menteri Agama",
+    "kategori": "Peraturan Menteri Agama (masa transisi)",
     "judul": "PMA tentang Penyelenggaraan Perjalanan Ibadah Umrah",
     "nomor": "PMA 9/2023",
     "tahun": 2023,
     "file": "/regulasi/pma-9-2023-umrah.pdf"
   },
   {
-    "kategori": "Peraturan Menteri Agama",
+    "kategori": "Peraturan Menteri Agama (masa transisi)",
     "judul": "PMA tentang Penyelenggaraan Ibadah Haji Khusus",
     "nomor": "PMA 25/2016",
     "tahun": 2016,
@@ -29,10 +43,10 @@
   },
   {
     "kategori": "Keputusan",
-    "judul": "Keputusan Menteri Agama tentang Biaya Penyelenggaraan Ibadah Haji (BPIH) Tahun Berjalan",
-    "nomor": "KMA BPIH",
+    "judul": "Keputusan Menteri Haji dan Umrah tentang Biaya Penyelenggaraan Ibadah Haji (BPIH) Tahun Berjalan",
+    "nomor": "KMH BPIH",
     "tahun": 2026,
-    "file": "/regulasi/kma-bpih-2026.pdf"
+    "file": "/regulasi/kmh-bpih-2026.pdf"
   },
   {
     "kategori": "Formulir",

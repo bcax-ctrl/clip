@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, Info } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,6 +29,19 @@ export default function RegulasiPage() {
         title="Regulasi & Unduhan"
         description="Peraturan perundang-undangan, keputusan, dan formulir terkait penyelenggaraan haji dan umrah."
       />
+
+      <section className="container-page pt-10">
+        <div className="flex items-start gap-3 rounded-xl border border-accent/30 bg-accent/10 p-5 text-foreground">
+          <Info className="mt-0.5 size-6 shrink-0 text-accent" aria-hidden="true" />
+          <p className="text-base">
+            Sejak 2026, kewenangan pengaturan haji dan umrah dialihkan dari
+            Kementerian Agama ke Kementerian Haji dan Umrah (UU No. 8/2019 jo.
+            UU No. 14/2025). Peraturan Menteri Agama (PMA) yang ditandai
+            &ldquo;masa transisi&rdquo; masih berlaku sepanjang belum digantikan
+            oleh peraturan baru dari Kementerian Haji dan Umrah.
+          </p>
+        </div>
+      </section>
 
       <section className="container-page py-12 space-y-10">
         {Object.entries(grouped).map(([kategori, items]) => (

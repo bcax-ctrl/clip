@@ -8,11 +8,11 @@
       },
       {
         "q": "Di mana saya bisa mendaftar haji reguler?",
-        "a": "Pendaftaran dilakukan di Kantor Kementerian Agama Kabupaten/Kota sesuai domisili sesuai KTP, dengan membawa dokumen persyaratan dan melakukan setoran awal BPIH melalui Bank Penerima Setoran (BPS) BPIH."
+        "a": "Pendaftaran dilakukan di Kantor Kementerian Haji dan Umrah Kabupaten/Kota sesuai domisili sesuai KTP, dengan membawa dokumen persyaratan dan melakukan setoran awal BPIH melalui Bank Penerima Setoran (BPS) BPIH."
       },
       {
         "q": "Apakah pendaftaran haji bisa diwakilkan?",
-        "a": "Proses perekaman data dan foto biometrik wajib dilakukan sendiri oleh calon jemaah karena melibatkan sidik jari dan foto langsung di kantor Kemenag Kabupaten/Kota."
+        "a": "Proses perekaman data dan foto biometrik wajib dilakukan sendiri oleh calon jemaah karena melibatkan sidik jari dan foto langsung di kantor Kementerian Haji dan Umrah Kabupaten/Kota."
       }
     ]
   },
@@ -25,7 +25,7 @@
       },
       {
         "q": "Apakah setoran awal bisa dikembalikan jika membatalkan?",
-        "a": "Ya. Setoran awal (dan pelunasan bila sudah dibayarkan) dapat dikembalikan melalui proses pembatalan porsi dengan mengajukan permohonan ke Kantor Kemenag Kabupaten/Kota."
+        "a": "Ya. Setoran awal (dan pelunasan bila sudah dibayarkan) dapat dikembalikan melalui proses pembatalan porsi dengan mengajukan permohonan ke Kantor Kementerian Haji dan Umrah Kabupaten/Kota."
       }
     ]
   },
@@ -34,7 +34,7 @@
     "pertanyaan": [
       {
         "q": "Bagaimana cara memastikan travel umrah resmi dan berizin?",
-        "a": "Periksa nomor izin PPIU/PIHK travel tersebut pada halaman Direktori Travel di situs ini, atau melalui aplikasi SIPATUH Kementerian Agama. Jangan tergoda harga jauh di bawah wajar."
+        "a": "Periksa nomor izin PPIU/PIHK travel tersebut pada halaman Direktori Travel di situs ini, atau melalui kanal resmi Kementerian Haji dan Umrah (penerus SIPATUH). Jangan tergoda harga jauh di bawah wajar."
       },
       {
         "q": "Apa bedanya PPIU dan PIHK?",

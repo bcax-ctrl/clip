@@ -7,7 +7,7 @@ import { getAllBerita, getBeritaCategories } from "@/lib/berita";
 export const metadata: Metadata = {
   title: "Berita & Pengumuman",
   description:
-    "Berita, pengumuman, dan kegiatan terbaru Bidang PHU Kanwil Kemenag Kalimantan Selatan.",
+    "Berita, pengumuman, dan kegiatan terbaru Kanwil Kementerian Haji dan Umrah Provinsi Kalimantan Selatan.",
 };
 
 export default function BeritaPage() {

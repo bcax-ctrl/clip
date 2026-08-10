@@ -9,7 +9,7 @@ import { site } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Kontak & Pengaduan",
   description:
-    "Alamat, jam layanan, telepon, email, dan formulir pengaduan Bidang PHU Kanwil Kemenag Kalimantan Selatan.",
+    "Alamat, jam layanan, telepon, email, dan formulir pengaduan Kanwil Kementerian Haji dan Umrah Provinsi Kalimantan Selatan.",
 };
 
 export default function KontakPage() {

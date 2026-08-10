@@ -1,9 +1,15 @@
-# Situs Bidang PHU — Kanwil Kemenag Kalimantan Selatan
+# Situs Kanwil Kementerian Haji dan Umrah Provinsi Kalimantan Selatan
 
-Situs resmi Bidang Penyelenggaraan Haji dan Umrah (PHU), Kantor Wilayah
-Kementerian Agama Provinsi Kalimantan Selatan. Dibangun dengan fokus pada
-pengguna mayoritas mobile dan lansia: teks besar, kontras tinggi, navigasi
-sederhana, dan halaman ringan.
+Situs resmi Kantor Wilayah Kementerian Haji dan Umrah (Kemenhaj) Provinsi
+Kalimantan Selatan. Dibangun dengan fokus pada pengguna mayoritas mobile dan
+lansia: teks besar, kontras tinggi, navigasi sederhana, dan halaman ringan.
+
+> **Konteks kelembagaan**: Mulai 2026, penyelenggaraan haji dan umrah
+> dialihkan dari Kementerian Agama ke Kementerian Haji dan Umrah yang berdiri
+> sendiri (UU No. 8/2019 sebagaimana diubah dengan UU No. 14/2025). Situs ini
+> merepresentasikan Kanwil Kemenhaj Provinsi Kalimantan Selatan — kelanjutan
+> dari eks Bidang PHU Kanwil Kemenag Kalsel. Lihat `src/data/site.json` field
+> `keteranganKelembagaan` dan halaman **Profil** untuk detailnya.
 
 ## Stack
 
@@ -88,7 +94,7 @@ kode komponen. Tipe data ada di `src/lib/types.ts` dan diakses melalui
 
 | File | Digunakan di | Keterangan |
 |---|---|---|
-| `src/data/site.json` | Header, footer, kontak, pengumuman berjalan | Alamat, telepon, email, sosial media, jam layanan |
+| `src/data/site.json` | Header, footer, kontak, pengumuman berjalan | Alamat, telepon, email, sosial media, jam layanan — **email, sosial media, dan website saat ini contoh**, verifikasi kanal resmi Kanwil Kemenhaj Kalsel sebelum publish |
 | `src/data/statistik.json` | Beranda, Informasi Haji | Kuota, jemaah berangkat, total daftar tunggu |
 | `src/data/daftar-tunggu.json` | Informasi Haji | Kuota & daftar tunggu per kabupaten/kota |
 | `src/data/kabupaten.json` | Semua halaman yang mereferensi kab/kota | Daftar 13 kabupaten/kota se-Kalsel |
@@ -99,7 +105,7 @@ kode komponen. Tipe data ada di `src/lib/types.ts` dan diakses melalui
 | `src/data/faq.json` | FAQ | Kelompok pertanyaan per topik |
 | `src/data/galeri.json` + `public/galeri/*` | Galeri | Ganti gambar SVG placeholder dengan foto kegiatan asli (format JPG/PNG/WebP juga didukung) |
 | `src/data/layanan.json` | Layanan | Syarat, alur, biaya, estimasi waktu per layanan |
-| `src/data/profil.json` | Profil | Sambutan Kabid, visi misi, struktur organisasi, sejarah |
+| `src/data/profil.json` | Profil | Sambutan Kepala Kanwil, visi misi, struktur organisasi, sejarah — **struktur bidang di bawah Kanwil masih estimasi**, verifikasi setelah Peraturan Menteri Haji dan Umrah tentang Organisasi dan Tata Kerja Kanwil resmi berlaku |
 | `src/data/estimasi-keberangkatan.json` | Fitur Cek Estimasi Keberangkatan | Lihat bagian khusus di bawah |
 
 > ⚠️ **Penting sebelum go-live**: data pada `travel.json`, `regulasi.json`,

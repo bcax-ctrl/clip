@@ -6,7 +6,7 @@ import { galeriList } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Galeri",
-  description: "Dokumentasi kegiatan Bidang PHU Kanwil Kemenag Kalimantan Selatan.",
+  description: "Dokumentasi kegiatan Kanwil Kementerian Haji dan Umrah Provinsi Kalimantan Selatan.",
 };
 
 export default function GaleriPage() {

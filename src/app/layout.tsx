@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: `%s — ${site.singkatan}`,
   },
   description:
-    "Situs resmi Bidang Penyelenggaraan Haji dan Umrah (PHU) Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan. Informasi pendaftaran haji, layanan, daftar tunggu, direktori travel, dan pengaduan.",
+    "Situs resmi Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan. Informasi pendaftaran haji, layanan, daftar tunggu, direktori travel, dan pengaduan.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

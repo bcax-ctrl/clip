@@ -93,6 +93,7 @@ export type SiteConfig = {
   namaInstansi: string;
   namaKanwil: string;
   singkatan: string;
+  keteranganKelembagaan: string;
   alamat: string;
   telepon: string;
   whatsapp: string;
@@ -116,6 +117,7 @@ export type Profil = {
     foto: string;
     isi: string[];
   };
+  keteranganTransisi: string;
   visi: string;
   misi: string[];
   tugas: string;

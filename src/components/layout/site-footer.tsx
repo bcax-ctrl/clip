@@ -98,10 +98,13 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-border py-5">
-        <p className="container-page text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} {site.namaInstansi}, {site.namaKanwil}.
-          Seluruh hak cipta dilindungi.
-        </p>
+        <div className="container-page space-y-2 text-center text-sm text-muted-foreground">
+          <p>
+            © {new Date().getFullYear()} {site.namaInstansi}, {site.namaKanwil}.
+            Seluruh hak cipta dilindungi.
+          </p>
+          <p>{site.keteranganKelembagaan}</p>
+        </div>
       </div>
     </footer>
   );
