@@ -3,10 +3,11 @@ import type { EstimasiEntry } from "./types";
 import { getKabupatenNama } from "./data";
 
 /**
- * Lapisan data terpisah untuk fitur "Cek Estimasi Keberangkatan".
- * Saat ini memakai mock data JSON. Untuk produksi, ganti implementasi
- * `cariEstimasiPorsi` agar memanggil API resmi (mis. Siskohat) tanpa
- * mengubah kontrak fungsi ini.
+ * Lapisan data mock untuk fitur "Cek Estimasi Keberangkatan". Fungsi di
+ * bawah ini murni membaca data lokal dan aman dipakai di Client Component.
+ * Titik integrasi ke API resmi ada di
+ * src/app/informasi-haji/actions.ts (`cariEstimasiPorsiAction`), bukan di
+ * sini — supaya kredensial API tidak pernah masuk ke bundle client.
  */
 
 const DATA: EstimasiEntry[] = estimasiJson.data;
@@ -35,10 +36,4 @@ export function cariEstimasiPorsiSync(nomorPorsi: string): HasilEstimasi {
     ditemukan: true,
     data: { ...found, namaKabupaten: getKabupatenNama(found.kabupatenId) },
   };
-}
-
-export async function cariEstimasiPorsi(
-  nomorPorsi: string
-): Promise<HasilEstimasi> {
-  return cariEstimasiPorsiSync(nomorPorsi);
 }

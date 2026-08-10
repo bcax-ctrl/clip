@@ -8,12 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  cariEstimasiPorsiSync,
-  validasiNomorPorsi,
-  ESTIMASI_KETERANGAN,
-  type HasilEstimasi,
-} from "@/lib/estimasi";
+import { validasiNomorPorsi, ESTIMASI_KETERANGAN, type HasilEstimasi } from "@/lib/estimasi";
+import { cariEstimasiPorsiAction } from "@/app/informasi-haji/actions";
 
 export function EstimasiChecker() {
   const searchParams = useSearchParams();
@@ -26,26 +22,39 @@ export function EstimasiChecker() {
       ? "Nomor porsi harus terdiri dari 10 digit angka."
       : null
   );
-  const [hasil, setHasil] = React.useState<HasilEstimasi | null>(() =>
-    initialValid ? cariEstimasiPorsiSync(initial) : null
-  );
-  const [loading, setLoading] = React.useState(false);
+  const [hasil, setHasil] = React.useState<HasilEstimasi | null>(null);
+  const [loading, setLoading] = React.useState(initialValid);
 
-  function cari(nomor: string) {
-    if (!validasiNomorPorsi(nomor)) {
+  React.useEffect(() => {
+    if (!initial || !validasiNomorPorsi(initial)) return;
+
+    let cancelled = false;
+    cariEstimasiPorsiAction(initial).then((result) => {
+      if (!cancelled) {
+        setHasil(result);
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [initial]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+
+    if (!validasiNomorPorsi(nomorPorsi)) {
       setError("Nomor porsi harus terdiri dari 10 digit angka.");
       setHasil(null);
       return;
     }
+
     setError(null);
     setLoading(true);
-    setHasil(cariEstimasiPorsiSync(nomor));
+    const result = await cariEstimasiPorsiAction(nomorPorsi);
+    setHasil(result);
     setLoading(false);
-  }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    cari(nomorPorsi);
   }
 
   return (

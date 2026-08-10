@@ -10,6 +10,7 @@ import galeriJson from "@/data/galeri.json";
 import layananJson from "@/data/layanan.json";
 import siteJson from "@/data/site.json";
 import profilJson from "@/data/profil.json";
+import sumberResmiJson from "@/data/sumber-resmi.json";
 
 import type {
   Kabupaten,
@@ -24,6 +25,7 @@ import type {
   LayananItem,
   SiteConfig,
   Profil,
+  SumberResmi,
 } from "./types";
 
 export const kabupatenList: Kabupaten[] = kabupatenJson;
@@ -38,6 +40,7 @@ export const galeriList: GaleriItem[] = galeriJson;
 export const layananList: LayananItem[] = layananJson;
 export const site: SiteConfig = siteJson;
 export const profil: Profil = profilJson;
+export const sumberResmiList: SumberResmi[] = sumberResmiJson;
 
 export function getKabupatenNama(id: string): string {
   return kabupatenList.find((k) => k.id === id)?.nama ?? id;

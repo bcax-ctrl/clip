@@ -62,6 +62,12 @@ export type FaqTopik = {
   pertanyaan: { q: string; a: string }[];
 };
 
+export type SumberResmi = {
+  nama: string;
+  url: string;
+  keterangan: string;
+};
+
 export type EstimasiEntry = {
   nomorPorsi: string;
   nama: string;

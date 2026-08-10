@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { ServiceIcon } from "@/components/icon-map";
@@ -10,7 +10,7 @@ import { layananList } from "@/lib/data";
 export const metadata: Metadata = {
   title: "Layanan",
   description:
-    "Daftar layanan Bidang PHU: pendaftaran haji reguler, pembatalan porsi, pelimpahan porsi, rekomendasi izin PPIU/PIHK, rekomendasi paspor, dan pendaftaran haji khusus.",
+    "Daftar layanan Kanwil Kementerian Haji dan Umrah Kalsel: pendaftaran haji reguler, pembatalan porsi, pelimpahan porsi, rekomendasi izin PPIU/PIHK, rekomendasi paspor, dan pendaftaran haji khusus.",
 };
 
 export default function LayananPage() {
@@ -41,6 +41,25 @@ export default function LayananPage() {
               </Card>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-8 rounded-xl border border-border bg-secondary/50 p-5 text-base">
+          <p>
+            Layanan di atas diproses melalui Kanwil dan Kantor Kementerian
+            Haji dan Umrah Kabupaten/Kota se-Kalimantan Selatan. Untuk sistem
+            transaksi resmi tingkat nasional (pendaftaran daring, pelunasan,
+            dsb.), kunjungi{" "}
+            <a
+              href="https://haji.go.id/layanan"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 font-semibold text-primary hover:underline"
+            >
+              portal Layanan Kementerian Haji dan Umrah RI
+              <ExternalLink className="size-4" aria-hidden="true" />
+            </a>
+            .
+          </p>
         </div>
       </section>
     </div>

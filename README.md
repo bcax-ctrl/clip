@@ -121,13 +121,40 @@ Fitur ini punya lapisan data terpisah agar mudah diganti ke sumber data
 nyata (mis. integrasi API Siskohat) tanpa mengubah komponen UI:
 
 - **Data mock**: `src/data/estimasi-keberangkatan.json`
-- **Lapisan akses data**: `src/lib/estimasi.ts` — fungsi
+- **Lapisan akses data mock**: `src/lib/estimasi.ts` — fungsi
   `cariEstimasiPorsiSync(nomorPorsi)` dan `validasiNomorPorsi(nomorPorsi)`
+- **Titik integrasi API resmi**: `src/app/informasi-haji/actions.ts` — lihat
+  bagian "Integrasi ke Sistem Resmi" di bawah.
 
-Untuk integrasi ke API resmi di masa depan, ubah isi fungsi
-`cariEstimasiPorsiSync`/`cariEstimasiPorsi` di `src/lib/estimasi.ts` agar
-memanggil API tersebut, tanpa perlu mengubah komponen
-`src/components/informasi-haji/estimasi-checker.tsx`.
+## Integrasi ke Sistem Resmi (untuk Tim IT)
+
+⚠️ Situs ini **tidak** memiliki koneksi nyata ke sistem internal
+Kementerian Haji dan Umrah (Siskohat, dsb.) — itu sistem tertutup yang
+hanya bisa diakses oleh instansi resmi dengan kredensial resmi. Yang
+sudah disiapkan di sini hanyalah *lapisan integrasi*, agar tim IT yang
+punya akses resmi tinggal memasang kredensial tanpa perlu menulis ulang
+komponen UI.
+
+Cara mengaktifkan:
+
+1. Salin `.env.example` menjadi `.env.local`.
+2. Isi `HAJI_API_BASE_URL` dan `HAJI_API_KEY` dengan kredensial resmi.
+3. Selesai — `src/app/informasi-haji/actions.ts`
+   (`cariEstimasiPorsiAction`) otomatis akan memanggil API resmi tersebut
+   alih-alih data mock. Bila API gagal merespons, fungsi ini otomatis
+   *fallback* ke data mock lokal agar situs tidak rusak.
+
+Selama kedua env var itu kosong (default), seluruh fitur tetap memakai
+data mock lokal seperti biasa — tidak ada perilaku yang berubah.
+
+Pola yang sama (config di `src/lib/integration-config.ts` + Server Action
+di folder `src/app/<halaman>/actions.ts`) bisa direplikasi untuk
+menyambungkan data lain ke sumber resmi saat tersedia, misalnya daftar
+tunggu (`src/data/daftar-tunggu.json`) atau verifikasi legalitas travel
+(`src/data/travel.json`). Untuk transaksi resmi lain (pendaftaran,
+pelunasan, dll.), arahkan pengguna ke portal nasional resmi di
+[haji.go.id/layanan](https://haji.go.id/layanan) — situs ini adalah
+kanal informasi Kanwil Kalsel, bukan pengganti sistem transaksi resmi.
 
 ## Struktur Folder Ringkas
 
