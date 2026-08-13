@@ -1,0 +1,15 @@
+{
+  "keterangan": "DATA CONTOH untuk keperluan demo. Gantikan dengan sumber data resmi (mis. integrasi API Siskohat) sebelum situs ini digunakan secara resmi.",
+  "data": [
+    { "nomorPorsi": "3200001234", "nama": "Ahmad Fauzan (contoh)", "kabupatenId": "banjarmasin", "tahunPerkiraanBerangkat": 2039, "status": "Tunggu" },
+    { "nomorPorsi": "3200005678", "nama": "Siti Aminah (contoh)", "kabupatenId": "banjarbaru", "tahunPerkiraanBerangkat": 2038, "status": "Tunggu" },
+    { "nomorPorsi": "3200009012", "nama": "Muhammad Yusuf (contoh)", "kabupatenId": "banjar", "tahunPerkiraanBerangkat": 2040, "status": "Tunggu" },
+    { "nomorPorsi": "3200003456", "nama": "Fatimah Zahra (contoh)", "kabupatenId": "tanah-laut", "tahunPerkiraanBerangkat": 2037, "status": "Tunggu" },
+    { "nomorPorsi": "3200007890", "nama": "Abdul Karim (contoh)", "kabupatenId": "hulu-sungai-utara", "tahunPerkiraanBerangkat": 2038, "status": "Tunggu" },
+    { "nomorPorsi": "3200002468", "nama": "Halimah (contoh)", "kabupatenId": "tabalong", "tahunPerkiraanBerangkat": 2039, "status": "Tunggu" },
+    { "nomorPorsi": "3200013579", "nama": "Rahmat Hidayat (contoh)", "kabupatenId": "kotabaru", "tahunPerkiraanBerangkat": 2040, "status": "Tunggu" },
+    { "nomorPorsi": "3200024680", "nama": "Nur Aisyah (contoh)", "kabupatenId": "tanah-bumbu", "tahunPerkiraanBerangkat": 2039, "status": "Tunggu" },
+    { "nomorPorsi": "3200011223", "nama": "Hasanuddin (contoh)", "kabupatenId": "hulu-sungai-tengah", "tahunPerkiraanBerangkat": 2038, "status": "Tunggu" },
+    { "nomorPorsi": "3200099887", "nama": "Zainal Abidin (contoh)", "kabupatenId": "balangan", "tahunPerkiraanBerangkat": 2027, "status": "Berangkat tahun berjalan" }
+  ]
+}

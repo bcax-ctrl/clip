@@ -1,0 +1,58 @@
+[
+  {
+    "topik": "Pendaftaran Haji",
+    "pertanyaan": [
+      {
+        "q": "Berapa usia minimal untuk mendaftar haji?",
+        "a": "Calon jemaah dapat mendaftar sejak berusia 12 tahun. Namun keberangkatan mengikuti nomor urut porsi dan ketentuan usia minimal saat berangkat sesuai peraturan yang berlaku."
+      },
+      {
+        "q": "Di mana saya bisa mendaftar haji reguler?",
+        "a": "Pendaftaran dilakukan di Kantor Kementerian Haji dan Umrah Kabupaten/Kota sesuai domisili sesuai KTP, dengan membawa dokumen persyaratan dan melakukan setoran awal BPIH melalui Bank Penerima Setoran (BPS) BPIH."
+      },
+      {
+        "q": "Apakah pendaftaran haji bisa diwakilkan?",
+        "a": "Proses perekaman data dan foto biometrik wajib dilakukan sendiri oleh calon jemaah karena melibatkan sidik jari dan foto langsung di kantor Kementerian Haji dan Umrah Kabupaten/Kota."
+      }
+    ]
+  },
+  {
+    "topik": "Pembatalan & Pelimpahan Porsi",
+    "pertanyaan": [
+      {
+        "q": "Bagaimana jika calon jemaah meninggal dunia sebelum berangkat?",
+        "a": "Porsi dapat dilimpahkan kepada suami/istri, anak, menantu, cucu, orang tua, atau saudara kandung sesuai ketentuan, dengan melampirkan dokumen kematian dan hubungan keluarga."
+      },
+      {
+        "q": "Apakah setoran awal bisa dikembalikan jika membatalkan?",
+        "a": "Ya. Setoran awal (dan pelunasan bila sudah dibayarkan) dapat dikembalikan melalui proses pembatalan porsi dengan mengajukan permohonan ke Kantor Kementerian Haji dan Umrah Kabupaten/Kota."
+      }
+    ]
+  },
+  {
+    "topik": "Travel Umrah & Haji Khusus",
+    "pertanyaan": [
+      {
+        "q": "Bagaimana cara memastikan travel umrah resmi dan berizin?",
+        "a": "Periksa nomor izin PPIU/PIHK travel tersebut pada halaman Direktori Travel di situs ini, atau melalui kanal resmi Kementerian Haji dan Umrah (penerus SIPATUH). Jangan tergoda harga jauh di bawah wajar."
+      },
+      {
+        "q": "Apa bedanya PPIU dan PIHK?",
+        "a": "PPIU (Penyelenggara Perjalanan Ibadah Umrah) menyelenggarakan perjalanan umrah, sedangkan PIHK (Penyelenggara Ibadah Haji Khusus) menyelenggarakan perjalanan haji khusus (non-reguler)."
+      }
+    ]
+  },
+  {
+    "topik": "Keberangkatan & Persiapan",
+    "pertanyaan": [
+      {
+        "q": "Bagaimana cara mengetahui estimasi tahun keberangkatan saya?",
+        "a": "Gunakan fitur Cek Estimasi Keberangkatan pada halaman Informasi Haji dengan memasukkan nomor porsi 10 digit Anda."
+      },
+      {
+        "q": "Apa itu manasik haji dan kapan dilaksanakan?",
+        "a": "Manasik haji adalah bimbingan praktik ibadah haji yang diselenggarakan sebelum keberangkatan. Jadwal per kelompok dapat dilihat pada halaman Informasi Haji."
+      }
+    ]
+  }
+]

@@ -1,0 +1,15 @@
+[
+  { "id": "banjarmasin", "nama": "Kota Banjarmasin" },
+  { "id": "banjarbaru", "nama": "Kota Banjarbaru" },
+  { "id": "banjar", "nama": "Kabupaten Banjar" },
+  { "id": "barito-kuala", "nama": "Kabupaten Barito Kuala" },
+  { "id": "tanah-laut", "nama": "Kabupaten Tanah Laut" },
+  { "id": "tapin", "nama": "Kabupaten Tapin" },
+  { "id": "hulu-sungai-selatan", "nama": "Kabupaten Hulu Sungai Selatan" },
+  { "id": "hulu-sungai-tengah", "nama": "Kabupaten Hulu Sungai Tengah" },
+  { "id": "hulu-sungai-utara", "nama": "Kabupaten Hulu Sungai Utara" },
+  { "id": "tabalong", "nama": "Kabupaten Tabalong" },
+  { "id": "kotabaru", "nama": "Kabupaten Kotabaru" },
+  { "id": "tanah-bumbu", "nama": "Kabupaten Tanah Bumbu" },
+  { "id": "balangan", "nama": "Kabupaten Balangan" }
+]

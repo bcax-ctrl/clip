@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#064e3b"/>
+      <stop offset="1" stop-color="#0a7a4a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g1)"/>
+  <circle cx="700" cy="80" r="120" fill="#ffffff" opacity="0.08"/>
+  <circle cx="80" cy="520" r="160" fill="#ffffff" opacity="0.08"/>
+  <text x="400" y="300" font-family="Arial, sans-serif" font-size="34" font-weight="700" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">Pemberangkatan Jemaah Haji</text>
+  <text x="400" y="345" font-family="Arial, sans-serif" font-size="18" fill="#ffffffcc" text-anchor="middle">Foto contoh — ganti dengan dokumentasi resmi</text>
+</svg>

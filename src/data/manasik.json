@@ -1,0 +1,30 @@
+[
+  {
+    "angkatan": "Gelombang 1",
+    "tanggalMulai": "2026-03-02",
+    "tanggalSelesai": "2026-03-03",
+    "lokasi": "Asrama Haji Banjarbaru",
+    "pesertaKabupaten": ["banjarmasin", "banjarbaru", "banjar"]
+  },
+  {
+    "angkatan": "Gelombang 2",
+    "tanggalMulai": "2026-03-09",
+    "tanggalSelesai": "2026-03-10",
+    "lokasi": "Asrama Haji Banjarbaru",
+    "pesertaKabupaten": ["barito-kuala", "tanah-laut", "tapin"]
+  },
+  {
+    "angkatan": "Gelombang 3",
+    "tanggalMulai": "2026-03-16",
+    "tanggalSelesai": "2026-03-17",
+    "lokasi": "Asrama Haji Banjarbaru",
+    "pesertaKabupaten": ["hulu-sungai-selatan", "hulu-sungai-tengah", "hulu-sungai-utara", "tabalong"]
+  },
+  {
+    "angkatan": "Gelombang 4",
+    "tanggalMulai": "2026-03-23",
+    "tanggalSelesai": "2026-03-24",
+    "lokasi": "Asrama Haji Banjarbaru",
+    "pesertaKabupaten": ["kotabaru", "tanah-bumbu", "balangan"]
+  }
+]

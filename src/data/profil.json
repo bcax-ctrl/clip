@@ -1,0 +1,64 @@
+{
+  "sambutan": {
+    "namaPejabat": "Nama Kepala Kanwil (isi sesuai pejabat aktif)",
+    "jabatan": "Kepala Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan",
+    "foto": "/profil/kabid-placeholder.svg",
+    "isi": [
+      "Assalamu'alaikum warahmatullahi wabarakatuh.",
+      "Selamat datang di situs resmi Kantor Wilayah Kementerian Haji dan Umrah (Kemenhaj) Provinsi Kalimantan Selatan. Situs ini kami hadirkan sebagai sarana informasi dan pelayanan bagi calon jemaah haji, jemaah umrah, keluarga, serta mitra Penyelenggara Perjalanan Ibadah Umrah (PPIU) dan Penyelenggara Ibadah Haji Khusus (PIHK) di seluruh Kalimantan Selatan.",
+      "Sejak tahun 2026, penyelenggaraan ibadah haji dan umrah yang sebelumnya berada di bawah Kementerian Agama kini dikelola oleh Kementerian Haji dan Umrah yang berdiri sendiri. Kantor Wilayah kami di Kalimantan Selatan merupakan kelanjutan dari Bidang Penyelenggaraan Haji dan Umrah (PHU) Kanwil Kementerian Agama Provinsi Kalimantan Selatan, kini dengan cakupan tugas dan kewenangan yang lebih luas sebagai kantor wilayah tersendiri.",
+      "Kami berkomitmen memberikan pelayanan yang transparan, mudah diakses, dan akuntabel dalam setiap tahapan penyelenggaraan ibadah haji dan umrah, mulai dari pendaftaran hingga kepulangan jemaah ke tanah air.",
+      "Semoga informasi pada situs ini bermanfaat dan memudahkan masyarakat Kalimantan Selatan dalam menunaikan ibadah haji dan umrah dengan aman, nyaman, dan mabrur.",
+      "Wassalamu'alaikum warahmatullahi wabarakatuh."
+    ]
+  },
+  "keteranganTransisi": "Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan dibentuk pada tahun 2026 berdasarkan UU No. 8 Tahun 2019 tentang Penyelenggaraan Ibadah Haji dan Umrah sebagaimana diubah dengan UU No. 14 Tahun 2025, yang mengalihkan seluruh kewenangan penyelenggaraan haji dan umrah dari Kementerian Agama ke Kementerian Haji dan Umrah. Struktur bidang di bawah Kanwil pada halaman ini masih bersifat estimasi mengikuti pola struktur eks-Bidang PHU dan perlu diverifikasi ulang setelah Peraturan Menteri Haji dan Umrah tentang Organisasi dan Tata Kerja Kantor Wilayah resmi diberlakukan.",
+  "visi": "Terwujudnya penyelenggaraan ibadah haji dan umrah yang transparan, efektif, efisien, akuntabel, dan berkeadilan bagi masyarakat Kalimantan Selatan.",
+  "misi": [
+    "Meningkatkan kualitas pelayanan pendaftaran dan dokumen jemaah haji dan umrah.",
+    "Meningkatkan pembinaan manasik dan bimbingan ibadah haji bagi jemaah.",
+    "Meningkatkan pengawasan dan pembinaan terhadap PPIU dan PIHK di Kalimantan Selatan.",
+    "Meningkatkan transparansi informasi kuota, daftar tunggu, dan keuangan haji.",
+    "Membangun sistem informasi haji dan umrah yang mudah diakses masyarakat."
+  ],
+  "tugas": "Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan mempunyai tugas melaksanakan kebijakan teknis di bidang pendaftaran dan dokumen haji, pembinaan haji dan umrah, akomodasi transportasi dan perlengkapan haji, serta pengelolaan keuangan haji di wilayah Provinsi Kalimantan Selatan sesuai peraturan perundang-undangan.",
+  "fungsi": [
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pendaftaran dan dokumen haji.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pembinaan haji dan umrah.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang akomodasi, transportasi, dan perlengkapan haji.",
+    "Pelaksanaan pelayanan, bimbingan, dan pembinaan di bidang pengelolaan keuangan haji.",
+    "Koordinasi dan pembinaan Kantor Kementerian Haji dan Umrah tingkat kabupaten/kota se-Kalimantan Selatan.",
+    "Pelaksanaan urusan tata usaha Kantor Wilayah."
+  ],
+  "strukturOrganisasi": {
+    "kepala": "Kepala Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan",
+    "seksi": [
+      {
+        "nama": "Bagian Tata Usaha",
+        "tugasSingkat": "Perencanaan, kepegawaian, keuangan, dan administrasi umum Kanwil."
+      },
+      {
+        "nama": "Bidang Pendaftaran dan Dokumen Haji",
+        "tugasSingkat": "Layanan pendaftaran, pembatalan, dan pelimpahan porsi haji."
+      },
+      {
+        "nama": "Bidang Pembinaan Haji dan Umrah",
+        "tugasSingkat": "Bimbingan manasik, pembinaan jemaah, dan pengawasan PPIU/PIHK."
+      },
+      {
+        "nama": "Bidang Akomodasi, Transportasi, dan Perlengkapan Haji",
+        "tugasSingkat": "Pengaturan asrama haji, transportasi, dan perlengkapan jemaah."
+      },
+      {
+        "nama": "Bidang Pengelolaan Keuangan Haji",
+        "tugasSingkat": "Pengelolaan setoran, pelunasan, dan keuangan BPIH."
+      }
+    ]
+  },
+  "sejarah": [
+    "Sebelum 2026, layanan haji dan umrah di Kalimantan Selatan ditangani oleh Bidang Penyelenggaraan Haji dan Umrah (PHU), salah satu bidang di lingkungan Kantor Wilayah Kementerian Agama Provinsi Kalimantan Selatan.",
+    "Melalui UU No. 14 Tahun 2025 tentang Perubahan Ketiga atas UU No. 8 Tahun 2019, pemerintah membentuk Kementerian Haji dan Umrah sebagai kementerian tersendiri yang terpisah dari Kementerian Agama. Seluruh kewenangan penyelenggaraan haji dan umrah, termasuk pegawai dan aset Bidang PHU di daerah, dialihkan ke kementerian baru ini.",
+    "Kepala Bidang PHU Kanwil Kemenag Provinsi Kalimantan Selatan kemudian dilantik menjadi Kepala Kantor Wilayah Kementerian Haji dan Umrah Provinsi Kalimantan Selatan, menandai berdirinya Kanwil Kemenhaj Kalsel sebagai instansi vertikal tersendiri di daerah.",
+    "Kalimantan Selatan memberangkatkan jemaah haji setiap tahun melalui Embarkasi Banjarmasin, dengan cakupan pelayanan meliputi 13 kabupaten/kota se-Kalimantan Selatan."
+  ]
+}

@@ -1,0 +1,102 @@
+[
+  {
+    "nama": "PT Amanah Mulia Wisata (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "banjarmasin",
+    "nomorSK": "CONTOH/SK-PPIU/001/2024",
+    "masaBerlakuSK": "2024-01-10 s.d. 2027-01-09",
+    "alamat": "Jl. Contoh Raya No. 1, Banjarmasin",
+    "telepon": "0511-000000",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Barokah Tanah Suci (Contoh)",
+    "jenis": "PIHK",
+    "kabupatenId": "banjarmasin",
+    "nomorSK": "CONTOH/SK-PIHK/002/2023",
+    "masaBerlakuSK": "2023-05-02 s.d. 2026-05-01",
+    "alamat": "Jl. Contoh Sejahtera No. 12, Banjarmasin",
+    "telepon": "0511-000001",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Cahaya Haramain (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "banjarbaru",
+    "nomorSK": "CONTOH/SK-PPIU/003/2024",
+    "masaBerlakuSK": "2024-03-15 s.d. 2027-03-14",
+    "alamat": "Jl. Contoh Damai No. 5, Banjarbaru",
+    "telepon": "0511-000002",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Damai Umrah Sejahtera (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "banjar",
+    "nomorSK": "CONTOH/SK-PPIU/004/2022",
+    "masaBerlakuSK": "2022-06-01 s.d. 2025-05-31",
+    "alamat": "Jl. Contoh Martapura No. 8, Martapura",
+    "telepon": "0511-000003",
+    "status": "kedaluwarsa"
+  },
+  {
+    "nama": "PT Elham Wisata Religi (Contoh)",
+    "jenis": "PIHK",
+    "kabupatenId": "tanah-laut",
+    "nomorSK": "CONTOH/SK-PIHK/005/2024",
+    "masaBerlakuSK": "2024-02-20 s.d. 2027-02-19",
+    "alamat": "Jl. Contoh Pelaihari No. 3, Pelaihari",
+    "telepon": "0512-000004",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Firdaus Mulia Tour (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "hulu-sungai-utara",
+    "nomorSK": "CONTOH/SK-PPIU/006/2023",
+    "masaBerlakuSK": "2023-09-11 s.d. 2026-09-10",
+    "alamat": "Jl. Contoh Amuntai No. 7, Amuntai",
+    "telepon": "0527-000005",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Ghaniyah Travel Umrah (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "tabalong",
+    "nomorSK": "CONTOH/SK-PPIU/007/2024",
+    "masaBerlakuSK": "2024-04-18 s.d. 2027-04-17",
+    "alamat": "Jl. Contoh Tanjung No. 9, Tanjung",
+    "telepon": "0526-000006",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Hijaz Nur Amanah (Contoh)",
+    "jenis": "PIHK",
+    "kabupatenId": "kotabaru",
+    "nomorSK": "CONTOH/SK-PIHK/008/2022",
+    "masaBerlakuSK": "2022-01-05 s.d. 2025-01-04",
+    "alamat": "Jl. Contoh Kotabaru No. 4, Kotabaru",
+    "telepon": "0518-000007",
+    "status": "kedaluwarsa"
+  },
+  {
+    "nama": "PT Iman Sejahtera Wisata (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "tanah-bumbu",
+    "nomorSK": "CONTOH/SK-PPIU/009/2024",
+    "masaBerlakuSK": "2024-07-07 s.d. 2027-07-06",
+    "alamat": "Jl. Contoh Batulicin No. 2, Batulicin",
+    "telepon": "0518-000008",
+    "status": "aktif"
+  },
+  {
+    "nama": "PT Jannah Barokah Mandiri (Contoh)",
+    "jenis": "PPIU",
+    "kabupatenId": "hulu-sungai-tengah",
+    "nomorSK": "CONTOH/SK-PPIU/010/2023",
+    "masaBerlakuSK": "2023-11-25 s.d. 2026-11-24",
+    "alamat": "Jl. Contoh Barabai No. 6, Barabai",
+    "telepon": "0517-000009",
+    "status": "aktif"
+  }
+]

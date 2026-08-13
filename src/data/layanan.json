@@ -1,0 +1,134 @@
+[
+  {
+    "slug": "pendaftaran-haji-reguler",
+    "judul": "Pendaftaran Haji Reguler",
+    "ringkasan": "Pendaftaran calon jemaah haji reguler dengan setoran awal BPIH.",
+    "icon": "UserPlus",
+    "syarat": [
+      "Beragama Islam",
+      "Kartu Tanda Penduduk (KTP) elektronik yang masih berlaku",
+      "Kartu Keluarga (KK)",
+      "Akta kelahiran, akta nikah, atau ijazah sebagai bukti identitas tambahan",
+      "Pas foto terbaru latar belakang putih ukuran 3x4 (80% wajah)",
+      "Buku tabungan setoran awal BPIH atas nama calon jemaah",
+      "Surat keterangan sehat dari fasilitas kesehatan (bila diperlukan)"
+    ],
+    "alur": [
+      { "judul": "Buka tabungan haji", "deskripsi": "Calon jemaah membuka tabungan di Bank Penerima Setoran (BPS) BPIH dan melakukan setoran awal." },
+      { "judul": "Datang ke Kantor Kementerian Haji dan Umrah Kabupaten/Kota", "deskripsi": "Membawa seluruh dokumen persyaratan ke loket pendaftaran haji sesuai domisili KTP." },
+      { "judul": "Verifikasi dan perekaman data", "deskripsi": "Petugas memverifikasi dokumen serta melakukan perekaman foto dan sidik jari (biometrik)." },
+      { "judul": "Penerbitan nomor porsi", "deskripsi": "Sistem Siskohat menerbitkan nomor porsi sebagai bukti pendaftaran resmi." },
+      { "judul": "Terima Bukti Pendaftaran Setoran Awal (BPIH)", "deskripsi": "Jemaah menerima lembar bukti pendaftaran yang memuat nomor porsi dan estimasi keberangkatan." }
+    ],
+    "biaya": "Setoran awal sesuai ketentuan BPS BPIH (tidak dipungut biaya administrasi di kantor Kementerian Haji dan Umrah).",
+    "estimasiWaktu": "1 hari kerja (proses di loket), keberangkatan mengikuti nomor urut porsi dan kuota tahunan."
+  },
+  {
+    "slug": "pembatalan-porsi-haji",
+    "judul": "Pembatalan Porsi Haji",
+    "ringkasan": "Permohonan pembatalan porsi dan pengembalian setoran BPIH.",
+    "icon": "XCircle",
+    "syarat": [
+      "Surat permohonan pembatalan bermeterai dari calon jemaah/ahli waris",
+      "Bukti Pendaftaran Setoran Awal BPIH asli",
+      "KTP dan Kartu Keluarga",
+      "Buku tabungan haji asli",
+      "Surat kematian dari kelurahan/rumah sakit (jika pembatalan karena wafat)",
+      "Surat kuasa dan KTP ahli waris (jika diajukan oleh ahli waris)"
+    ],
+    "alur": [
+      { "judul": "Ajukan surat permohonan", "deskripsi": "Sampaikan surat permohonan pembatalan ke Kantor Kementerian Haji dan Umrah Kabupaten/Kota tempat mendaftar." },
+      { "judul": "Verifikasi dokumen", "deskripsi": "Petugas memeriksa kelengkapan dan keabsahan dokumen permohonan." },
+      { "judul": "Proses pada Siskohat", "deskripsi": "Petugas melakukan pembatalan porsi pada sistem dan meneruskan ke Kanwil/Kementerian Haji dan Umrah Pusat." },
+      { "judul": "Pengembalian dana", "deskripsi": "Dana setoran dikembalikan ke rekening jemaah/ahli waris sesuai ketentuan yang berlaku." }
+    ],
+    "biaya": "Tidak dipungut biaya. Dana yang dikembalikan sesuai jumlah setoran yang telah dibayarkan.",
+    "estimasiWaktu": "Kurang lebih 14 hari kerja sejak dokumen dinyatakan lengkap, tidak termasuk proses transfer bank."
+  },
+  {
+    "slug": "pelimpahan-porsi",
+    "judul": "Pelimpahan Porsi (Jemaah Wafat / Sakit Permanen)",
+    "ringkasan": "Pengalihan nomor porsi kepada keluarga inti sesuai ketentuan.",
+    "icon": "Users",
+    "syarat": [
+      "Surat permohonan pelimpahan porsi bermeterai",
+      "Surat keterangan kematian dari kelurahan/rumah sakit, atau surat keterangan sakit permanen dari dokter rumah sakit pemerintah",
+      "Bukti Pendaftaran Setoran Awal BPIH asli",
+      "KTP dan Kartu Keluarga yang menunjukkan hubungan keluarga (suami/istri, anak, orang tua, menantu, cucu, atau saudara kandung)",
+      "Surat pernyataan kesediaan menerima pelimpahan porsi"
+    ],
+    "alur": [
+      { "judul": "Ajukan permohonan ke Kantor Kementerian Haji dan Umrah Kabupaten/Kota", "deskripsi": "Ahli waris mengajukan surat permohonan pelimpahan beserta dokumen pendukung." },
+      { "judul": "Verifikasi hubungan keluarga", "deskripsi": "Petugas memverifikasi keabsahan dokumen dan hubungan keluarga dengan calon jemaah yang wafat/sakit permanen." },
+      { "judul": "Perekaman data penerima pelimpahan", "deskripsi": "Penerima pelimpahan melakukan perekaman biometrik seperti pendaftaran baru." },
+      { "judul": "Penerbitan porsi pelimpahan", "deskripsi": "Nomor porsi lama dialihkan ke penerima pelimpahan pada Siskohat." }
+    ],
+    "biaya": "Tidak dipungut biaya.",
+    "estimasiWaktu": "Kurang lebih 7-14 hari kerja sejak dokumen dinyatakan lengkap."
+  },
+  {
+    "slug": "rekomendasi-izin-ppiu-pihk",
+    "judul": "Rekomendasi Izin PPIU/PIHK",
+    "ringkasan": "Rekomendasi Kanwil untuk penerbitan izin operasional PPIU/PIHK oleh Kementerian Haji dan Umrah.",
+    "icon": "ShieldCheck",
+    "syarat": [
+      "Surat permohonan dari perusahaan/biro perjalanan wisata",
+      "Akta pendirian perusahaan dan pengesahan badan hukum",
+      "Izin usaha perjalanan wisata dari dinas pariwisata",
+      "Bukti domisili dan sarana kantor yang memadai",
+      "Profil dan struktur organisasi perusahaan",
+      "Bukti kemampuan keuangan/jaminan sesuai ketentuan Kementerian Haji dan Umrah"
+    ],
+    "alur": [
+      { "judul": "Ajukan permohonan ke Kanwil Kementerian Haji dan Umrah Provinsi", "deskripsi": "Perusahaan menyampaikan berkas permohonan rekomendasi lengkap." },
+      { "judul": "Verifikasi administrasi", "deskripsi": "Tim Kanwil memeriksa kelengkapan dan keabsahan dokumen." },
+      { "judul": "Peninjauan lapangan (jika diperlukan)", "deskripsi": "Tim melakukan visitasi ke kantor perusahaan untuk memastikan kesiapan operasional." },
+      { "judul": "Penerbitan surat rekomendasi", "deskripsi": "Kanwil menerbitkan surat rekomendasi yang diteruskan ke Kementerian Haji dan Umrah Pusat untuk penerbitan izin PPIU/PIHK." }
+    ],
+    "biaya": "Tidak dipungut biaya rekomendasi. Biaya perizinan pusat mengikuti ketentuan Kementerian Haji dan Umrah RI.",
+    "estimasiWaktu": "Kurang lebih 14-30 hari kerja tergantung kelengkapan dokumen dan hasil visitasi."
+  },
+  {
+    "slug": "rekomendasi-paspor-jemaah",
+    "judul": "Rekomendasi Paspor Jemaah",
+    "ringkasan": "Surat rekomendasi untuk pengurusan paspor calon jemaah haji.",
+    "icon": "FileCheck2",
+    "syarat": [
+      "Bukti Pendaftaran Setoran Awal BPIH / bukti pelunasan",
+      "KTP elektronik yang masih berlaku",
+      "Kartu Keluarga",
+      "Akta kelahiran/buku nikah/ijazah",
+      "Pas foto sesuai ketentuan keimigrasian"
+    ],
+    "alur": [
+      { "judul": "Ajukan permohonan di Kantor Kementerian Haji dan Umrah Kabupaten/Kota", "deskripsi": "Calon jemaah mengajukan permohonan surat rekomendasi paspor haji." },
+      { "judul": "Verifikasi data jemaah pada Siskohat", "deskripsi": "Petugas memastikan kesesuaian data jemaah dengan data pendaftaran haji." },
+      { "judul": "Penerbitan surat rekomendasi", "deskripsi": "Surat rekomendasi diterbitkan untuk dibawa ke Kantor Imigrasi." },
+      { "judul": "Pengurusan paspor di Kantor Imigrasi", "deskripsi": "Jemaah melanjutkan proses penerbitan paspor di Kantor Imigrasi setempat." }
+    ],
+    "biaya": "Tidak dipungut biaya untuk surat rekomendasi. Biaya penerbitan paspor mengikuti tarif resmi Kantor Imigrasi.",
+    "estimasiWaktu": "1-3 hari kerja untuk surat rekomendasi."
+  },
+  {
+    "slug": "pendaftaran-haji-khusus",
+    "judul": "Pendaftaran Haji Khusus",
+    "ringkasan": "Pendaftaran calon jemaah haji khusus melalui PIHK berizin.",
+    "icon": "Star",
+    "syarat": [
+      "Beragama Islam dan berusia minimal 12 tahun",
+      "KTP elektronik dan Kartu Keluarga",
+      "Paspor dengan masa berlaku sesuai ketentuan",
+      "Bukti setoran awal BPIH Khusus melalui PIHK berizin resmi",
+      "Pas foto sesuai ketentuan",
+      "Surat keterangan sehat dari fasilitas kesehatan"
+    ],
+    "alur": [
+      { "judul": "Pilih PIHK berizin resmi", "deskripsi": "Pastikan PIHK terdaftar pada Direktori Travel di situs ini sebelum mendaftar." },
+      { "judul": "Lakukan setoran awal BPIH Khusus", "deskripsi": "Setoran dilakukan melalui rekening resmi PIHK ke Bank Penerima Setoran BPIH Khusus." },
+      { "judul": "Verifikasi dan perekaman data di Kanwil", "deskripsi": "Calon jemaah melakukan verifikasi dan perekaman biometrik di Kantor Wilayah Kementerian Haji dan Umrah Provinsi." },
+      { "judul": "Penerbitan nomor porsi haji khusus", "deskripsi": "Nomor porsi diterbitkan melalui Siskohat dan berlaku secara nasional." }
+    ],
+    "biaya": "Sesuai paket yang ditetapkan PIHK, mengacu pada besaran BPIH Khusus yang ditetapkan Kementerian Haji dan Umrah.",
+    "estimasiWaktu": "1-2 hari kerja untuk verifikasi, keberangkatan mengikuti nomor urut porsi haji khusus."
+  }
+]
