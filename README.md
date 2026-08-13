@@ -167,6 +167,39 @@ src/data/                Sumber data JSON yang mudah diedit
 src/lib/                 Tipe data & fungsi akses data/konten
 ```
 
+## Serah Terima Kepemilikan
+
+Panduan singkat untuk memindahkan proyek ini ke pemilik/akun baru.
+
+1. **Pindahkan repository GitHub.**
+   - Cara paling bersih: pemilik lama membuka **Settings → General → Danger
+     Zone → Transfer ownership** di repo GitHub ini dan memasukkan
+     username/organisasi tujuan. Riwayat commit, issue, dan PR ikut
+     berpindah.
+   - Alternatif lebih cepat: undang akun baru sebagai **collaborator**
+     dengan akses **Admin** (Settings → Collaborators), lalu akun baru
+     melakukan transfer ownership sendiri dari sisi mereka kapan pun siap.
+2. **Environment variables.** Situs ini **tidak menyimpan secret apa pun di
+   dalam repo** — file `.env.example` di root hanya berisi nama variabel
+   dengan nilai kosong (lihat bagian "Integrasi ke Sistem Resmi" di atas).
+   Jika di kemudian hari sudah ada kredensial API resmi (`HAJI_API_BASE_URL`,
+   `HAJI_API_KEY`), isi lewat **Vercel Project Settings → Environment
+   Variables** (bukan file yang di-commit ke Git), atau file `.env.local` di
+   mesin lokal yang sudah otomatis di-ignore oleh `.gitignore`. Jangan pernah
+   mengirim isi `.env` lewat chat atau email biasa — pakai password manager
+   bersama (mis. 1Password/Bitwarden) atau fitur "Environment Variables" di
+   dashboard Vercel yang sudah terenkripsi.
+3. **Pindahkan deployment Vercel.** Di dashboard Vercel: **Project Settings →
+   Transfer** untuk memindahkan proyek ke tim/akun lain, atau hubungkan ulang
+   repo yang sudah dipindah ownership-nya ke akun Vercel baru mengikuti
+   langkah "Deploy ke Vercel" di atas.
+4. **Domain kustom** (jika ada) ikut dipindahkan lewat pengaturan domain di
+   Vercel Project Settings, atau diarahkan ulang (DNS) ke deployment baru.
+5. **Verifikasi setelah pindah**: jalankan `npm install && npm run build`
+   dari clone baru untuk memastikan tidak ada yang rusak, lalu cek daftar di
+   bagian "Mengganti Data" di atas — pastikan pemilik baru tahu data mana
+   yang masih placeholder dan perlu diisi data resmi sebelum publik.
+
 ## Aksesibilitas & Performa
 
 - Ukuran teks dasar 18px, kontras warna tinggi, target sentuh besar
