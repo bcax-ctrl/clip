@@ -13,7 +13,7 @@ import { getKabupatenNama } from "./data";
 const DATA: EstimasiEntry[] = estimasiJson.data;
 export const ESTIMASI_KETERANGAN = estimasiJson.keterangan;
 
-export const NOMOR_PORSI_REGEX = /^\d{10}$/;
+const NOMOR_PORSI_REGEX = /^\d{10}$/;
 
 export function validasiNomorPorsi(nomorPorsi: string): boolean {
   return NOMOR_PORSI_REGEX.test(nomorPorsi.trim());

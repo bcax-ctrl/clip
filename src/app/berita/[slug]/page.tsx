@@ -8,11 +8,8 @@ import { CalendarDays, ChevronLeft } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  getAllBerita,
-  getBeritaBySlug,
-  formatTanggalIndonesia,
-} from "@/lib/berita";
+import { getAllBerita, getBeritaBySlug } from "@/lib/berita";
+import { formatTanggalIndonesia } from "@/lib/format";
 
 export function generateStaticParams() {
   return getAllBerita().map((b) => ({ slug: b.slug }));

@@ -15,7 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { site, statistik, layananList } from "@/lib/data";
-import { getLatestBerita, formatTanggalIndonesia } from "@/lib/berita";
+import { getLatestBerita } from "@/lib/berita";
+import { formatTanggalIndonesia } from "@/lib/format";
 
 const LAYANAN_UTAMA_SLUGS = [
   "pendaftaran-haji-reguler",

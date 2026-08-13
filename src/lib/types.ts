@@ -143,7 +143,3 @@ export type BeritaMeta = {
   excerpt: string;
   image?: string;
 };
-
-export type BeritaPost = BeritaMeta & {
-  content: string;
-};

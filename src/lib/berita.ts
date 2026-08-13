@@ -4,8 +4,6 @@ import matter from "gray-matter";
 
 import type { BeritaMeta } from "./types";
 
-export { formatTanggalIndonesia } from "./format";
-
 const CONTENT_DIR = path.join(process.cwd(), "content", "berita");
 
 function readSlugs(): string[] {
