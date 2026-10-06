@@ -1,0 +1,20 @@
+{
+  "namaInstansi": "",
+  "namaKanwil": "",
+  "singkatan": "",
+  "keteranganKelembagaan": "",
+  "alamat": "",
+  "telepon": "",
+  "whatsapp": "",
+  "email": "",
+  "jamLayanan": [],
+  "koordinatPeta": { "lat": 0, "lng": 0 },
+  "sosialMedia": {
+    "instagram": "",
+    "facebook": "",
+    "youtube": "",
+    "website": ""
+  },
+  "lapor": "",
+  "pengumumanBerjalan": []
+}
