@@ -85,35 +85,42 @@ Tidak perlu database atau CMS — cukup tambah file baru.
 Tidak ada langkah build tambahan; berita baru otomatis muncul di halaman
 Beranda (3 terbaru) dan halaman Berita & Pengumuman.
 
-## Mengganti Data (Mock → Data Resmi)
+## Mengisi Data (Situs Dikirim Kosong)
 
 Semua data non-konten (statistik, layanan, direktori travel, dll.) berada di
-`src/data/*.json`. Edit file JSON tersebut langsung — tidak perlu mengubah
-kode komponen. Tipe data ada di `src/lib/types.ts` dan diakses melalui
-`src/lib/data.ts`.
+`src/data/*.json`, dan **saat ini sengaja dikosongkan** (array `[]` atau
+objek dengan field kosong) — situs ini diserahkan sebagai kerangka siap
+pakai, bukan terisi data contoh/fiktif. Edit file JSON tersebut langsung
+untuk mulai mengisi; tidak perlu mengubah kode komponen. Tipe data ada di
+`src/lib/types.ts` dan diakses melalui `src/lib/data.ts` — jadikan acuan
+field apa saja yang perlu diisi per file.
 
 | File | Digunakan di | Keterangan |
 |---|---|---|
-| `src/data/site.json` | Header, footer, kontak, pengumuman berjalan | Alamat, telepon, email, sosial media, jam layanan — **email, sosial media, dan website saat ini contoh**, verifikasi kanal resmi Kanwil Kemenhaj Kalsel sebelum publish |
+| `src/data/site.json` | Header, footer, kontak, pengumuman berjalan | Nama instansi, alamat, telepon, email, sosial media, jam layanan, koordinat peta |
 | `src/data/statistik.json` | Beranda, Informasi Haji | Kuota, jemaah berangkat, total daftar tunggu |
 | `src/data/daftar-tunggu.json` | Informasi Haji | Kuota & daftar tunggu per kabupaten/kota |
-| `src/data/kabupaten.json` | Semua halaman yang mereferensi kab/kota | Daftar 13 kabupaten/kota se-Kalsel |
+| `src/data/kabupaten.json` | Semua halaman yang mereferensi kab/kota | Daftar kabupaten/kota yang dilayani |
 | `src/data/manasik.json` | Informasi Haji | Jadwal manasik per gelombang |
-| `src/data/embarkasi.json` | Informasi Haji | Info Embarkasi Banjarmasin |
-| `src/data/travel.json` | Direktori Travel | **Data contoh** — ganti dengan data PPIU/PIHK resmi & terverifikasi sebelum publish |
-| `src/data/regulasi.json` + `public/regulasi/*.pdf` | Regulasi & Unduhan | Ganti file PDF placeholder dengan dokumen resmi, sesuaikan entri JSON |
+| `src/data/embarkasi.json` | Informasi Haji | Info embarkasi/asrama haji |
+| `src/data/travel.json` | Direktori Travel | Data PPIU/PIHK resmi & terverifikasi — isi hanya dengan data yang sudah diverifikasi, ini menyangkut keamanan masyarakat |
+| `src/data/regulasi.json` + `public/regulasi/*.pdf` | Regulasi & Unduhan | Tambahkan entri JSON dan unggah file PDF asli ke `public/regulasi/` |
 | `src/data/faq.json` | FAQ | Kelompok pertanyaan per topik |
-| `src/data/galeri.json` + `public/galeri/*` | Galeri | Ganti gambar SVG placeholder dengan foto kegiatan asli (format JPG/PNG/WebP juga didukung) |
+| `src/data/galeri.json` + `public/galeri/*` | Galeri | Tambahkan entri JSON dan unggah foto kegiatan asli ke `public/galeri/` (JPG/PNG/WebP/SVG didukung) |
 | `src/data/layanan.json` | Layanan | Syarat, alur, biaya, estimasi waktu per layanan |
-| `src/data/profil.json` | Profil | Sambutan Kepala Kanwil, visi misi, struktur organisasi, sejarah — **struktur bidang di bawah Kanwil masih estimasi**, verifikasi setelah Peraturan Menteri Haji dan Umrah tentang Organisasi dan Tata Kerja Kanwil resmi berlaku |
+| `src/data/profil.json` | Profil | Sambutan Kepala Kanwil, visi misi, struktur organisasi, sejarah |
 | `src/data/estimasi-keberangkatan.json` | Fitur Cek Estimasi Keberangkatan | Lihat bagian khusus di bawah |
+| `src/data/sumber-resmi.json` | Berita & Pengumuman | Sudah berisi tautan terverifikasi ke kanal resmi nasional (haji.go.id, dll.) — tidak perlu diisi ulang, hanya cek berkala kalau ada perubahan |
 
-> ⚠️ **Penting sebelum go-live**: data pada `travel.json`, `regulasi.json`,
-> `profil.json` (nama pejabat), dan `estimasi-keberangkatan.json` saat ini
-> berisi **data contoh/placeholder** yang ditandai jelas (misalnya diberi
-> label "(Contoh)"). Wajib diganti dengan data resmi dan terverifikasi
-> sebelum situs digunakan untuk publik, khususnya data legalitas travel
-> yang menyangkut keamanan masyarakat.
+Folder `content/berita/` juga kosong — lihat bagian "Menambah Berita /
+Pengumuman" di atas untuk formatnya.
+
+> ⚠️ **Wajib diisi sebelum go-live**: situs tidak akan tampil layak ke
+> publik dalam kondisi kosong seperti ini — minimal isi `site.json` (identitas
+> & kontak), `profil.json`, `layanan.json`, dan `kabupaten.json` sebelum
+> deploy ke pengguna sungguhan. Khusus `travel.json`, pastikan hanya memuat
+> data PPIU/PIHK yang sudah diverifikasi — data keliru di sana berisiko
+> langsung terhadap keamanan masyarakat yang mencari travel haji/umrah.
 
 ### Fitur Cek Estimasi Keberangkatan
 
